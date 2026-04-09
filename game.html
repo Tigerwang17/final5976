@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dungeon Game</title>
+  <style>
+    :root{
+      --w: 960px;
+      --panel: rgba(255,255,255,0.08);
+      --panel2: rgba(255,255,255,0.12);
+      --txt: #e7f6ff;
+      --muted: rgba(231,246,255,0.75);
+      --accent: #ffd24a;
+      --accent2:#7cf7ff;
+      --danger:#ff4d6d;
+      --ok:#7dff7a;
+      --shadow: rgba(0,0,0,0.35);
+      --pixel: 3;
+      --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body{
+      min-height: 100vh; display: grid; place-items: center;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(124,247,255,0.18), transparent 55%),
+        radial-gradient(1100px 900px at 90% 20%, rgba(255,210,74,0.16), transparent 60%),
+        linear-gradient(180deg, #0b1020, #080a12 60%, #06070c);
+      color: var(--txt); font-family: var(--font);
+    }
+    .wrap{ width: min(var(--w), calc(100vw - 24px)); padding: 16px; }
+    .frame{
+      position: relative; border-radius: 22px; overflow: hidden;
+      box-shadow: 0 22px 55px var(--shadow);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    }
+    .hud{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 14px;
+      background: linear-gradient(90deg, rgba(124,247,255,0.16), rgba(255,210,74,0.14));
+      border-bottom:1px solid rgba(255,255,255,0.12); font-size:13px;
+    }
+    .hud .left, .hud .right{ display:flex; align-items:center; gap:12px; flex-wrap: wrap; }
+    .pill{
+      padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.14); color: var(--muted); white-space: nowrap;
+    }
+    .hpbar{
+      width: 180px; height: 10px; border-radius:999px; overflow:hidden;
+      background: rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25);
+    }
+    .hpbar > i{ display:block; height:100%; width:100%; background: linear-gradient(90deg, var(--danger), #ffb703, var(--ok)); transform-origin:left center; }
+    .lives{ display:flex; gap:6px; align-items:center; }
+    .heart{ width:14px; height:14px; background:var(--danger); clip-path: polygon(50% 90%, 8% 50%, 8% 26%, 26% 12%, 50% 24%, 74% 12%, 92% 26%, 92% 50%); filter: drop-shadow(0 2px 0 rgba(0,0,0,0.35)); opacity:0.95; }
+    .heart.empty{ opacity:0.18; }
+    canvas{ width:100%; height:560px; display:block; image-rendering:pixelated; background:transparent; }
+    .overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,0.55); backdrop-filter: blur(6px); }
+    .overlay.hidden{ display:none; }
+    .panel{
+      width:min(860px,100%); border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border:1px solid rgba(255,255,255,0.14); box-shadow:0 20px 50px rgba(0,0,0,0.45); padding:18px;
+    }
+    .title{ font-size:22px; font-weight:800; letter-spacing:0.6px; }
+    .sub{ margin-top:6px; color:var(--muted); line-height:1.35; font-size:13px; }
+    .grid{ margin-top:14px; display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:10px; }
+    @media (max-width:840px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    .card{
+      background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.14); border-radius:14px; padding:10px; cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease; user-select:none;
+    }
+    .card .thumb-wrap{
+      border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.12);
+      height:140px;
+      display:flex; justify-content:center; align-items:flex-end;
+      background: rgba(0,0,0,0.18);
+    }
+    .card .thumb{
+      width:auto;
+      max-width:100%;
+      max-height:100%;
+      height:100%;
+      display:block;
+      image-rendering:pixelated;
+      object-fit: contain;
+      object-position: center bottom;
+    }
+    .thumb-zoom-2x{
+      transform: scale(2);
+      transform-origin: center center;
+      object-position: center center;
+    }
+    .card:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,0.26); background: rgba(0,0,0,0.32); }
+    .card.selectedP1{ outline:2px solid rgba(124,247,255,0.85); }
+    .card.selectedP2{ outline:2px solid rgba(255,210,74,0.85); }
+    .card.locked{
+      cursor:not-allowed;
+      opacity: .75;
+      transform: none !important;
+    }
+    .card.locked:hover{ border-color: rgba(255,255,255,0.14); background: rgba(0,0,0,0.25); }
+    .card.locked .thumb{
+      filter: grayscale(1) saturate(0.2);
+    }
+    .card.locked .name{
+      color: rgba(231,246,255,0.55);
+    }
+    .card .name{ margin-top:8px; font-weight:700; font-size:13px; }
+    .thumb-wrap{ position: relative; }
+    .badge-evil{
+      position:absolute; left:8px; top:8px;
+      padding:2px 8px; border-radius:999px;
+      background: rgba(120,16,32,.95); color:#fff; font-size:12px; font-weight:800;
+      border:1px solid rgba(255,120,120,0.35);
+      box-shadow: 0 4px 10px rgba(0,0,0,.35);
+    }
+    .tags{ margin-top:6px; display:flex; gap:6px; flex-wrap:wrap; }
+    .tag{ font-size:12px; padding:3px 8px; border-radius:999px; border:1px solid rgba(255,255,255,0.14); color:var(--muted); background:rgba(255,255,255,0.06); }
+    .row{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .pick{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .pick b{ color:var(--txt); }
+    .btn{
+      padding:10px 14px; border-radius:999px; border:none; color:#081018; font-weight:800; cursor:pointer;
+      box-shadow:0 12px 25px rgba(0,0,0,0.35); background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+    .btn:disabled{ cursor:not-allowed; opacity:.45; filter:grayscale(.8); }
+    .btn.secondary{ background:rgba(255,255,255,0.10); color:var(--txt); border:1px solid rgba(255,255,255,0.16); box-shadow:none; }
+    .help{ margin-top:10px; color:rgba(231,246,255,0.72); font-size:12px; line-height:1.35; }
+    .kbd{ display:inline-block; padding:1px 7px; border-radius:8px; background:rgba(0,0,0,0.32); border:1px solid rgba(255,255,255,0.14); font-weight:700; color:rgba(231,246,255,0.9); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="frame">
+      <div class="hud">
+        <div class="left">
+          <div class="pill">反派生命</div>
+          <div class="hpbar" title="Boss HP"><i id="bossHpFill"></i></div>
+          <div class="pill">HP: <b id="bossHpText">50</b>/<b id="bossHpMax">50</b></div>
+        </div>
+        <div class="right">
+          <div class="pill">玩家1 <span id="p1Name">?</span></div>
+          <div class="lives" id="p1Lives"></div>
+          <div class="pill">玩家2 <span id="p2Name">?</span></div>
+          <div class="lives" id="p2Lives"></div>
+          <div class="pill">P1：<span class="kbd">A</span>/<span class="kbd">D</span> 移动 · <span class="kbd">Space</span> 发射</div>
+          <div class="pill">P2：<span class="kbd">9</span>/<span class="kbd">0</span>（或 <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>）移动 · <span class="kbd">=</span> 发射</div>
+        </div>
+      </div>
+      <canvas id="cv" width="960" height="560"></canvas>
+      <div class="overlay" id="overlay"><div class="panel" id="panel"></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const canvas = document.getElementById('cv');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      ctx.imageSmoothingEnabled = false;
+      const overlay = document.getElementById('overlay');
+      const panel = document.getElementById('panel');
+      const bossHpFill = document.getElementById('bossHpFill');
+      const bossHpText = document.getElementById('bossHpText');
+      const bossHpMax = document.getElementById('bossHpMax');
+      const p1LivesEl = document.getElementById('p1Lives');
+      const p2LivesEl = document.getElementById('p2Lives');
+      const p1NameEl = document.getElementById('p1Name');
+      const p2NameEl = document.getElementById('p2Name');
+      const W = canvas.width, H = canvas.height, px = 4;
+      const COLORS = {
+        sky1:'#0b1638', sky2:'#060814', neon1:'#7cf7ff', neon2:'#ffd24a',
+        white:'#e7f6ff', black:'#0a0d14', red:'#ff4d6d', green:'#7dff7a',
+        blue:'#5a7dff', purple:'#b884ff', pink:'#ff7ad9', orange:'#ff9b3d', gray:'#89a0b3',
+      };
+      const clamp = (v,a,b) => Math.max(a, Math.min(b,v));
+      const rand = (a,b) => Math.random()*(b-a)+a;
+      const aabb = (a,b) => !(a.x+a.w<=b.x||a.x>=b.x+b.w||a.y+a.h<=b.y||a.y>=b.y+b.h);
+      const drawPixelRect = (x,y,w,h,c)=>{ ctx.fillStyle=c; ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h)); };
+      function drawText(x,y,text,color,scale=2){ ctx.save(); ctx.imageSmoothingEnabled=false; ctx.translate(x,y); ctx.scale(scale,scale); ctx.font='8px monospace'; ctx.fillStyle=color; ctx.fillText(text,0,0); ctx.restore(); }
+
+      const CHARACTERS = [
+        { id:'cowcat', name:'忍者Oreo', c1:'#ffffff', c2:'#111827', acc:COLORS.neon1 },
+        { id:'wizard', name:'贤者Cheri', c1:'#6b3f2a', c2:'#3b2466', acc:COLORS.neon2 },
+        { id:'knight', name:'巫师Enos', c1:'#8aa0b3', c2:'#263244', acc:'#a3ffea' },
+        { id:'cinn', name:'宠物Mr.Star', c1:'#f7f2ff', c2:'#9fd7ff', acc:'#ffb3c7' },
+      ];
+      const CHARACTER_IMAGE_PATHS = {
+        cowcat: 'character/cat.PNG',
+        cinn: 'character/dog.PNG',
+        knight: 'character/knight.PNG',
+        wizard: 'character/wizard.PNG',
+      };
+      const characterImages = new Map();
+      const STAGE_IMAGES = {
+        stage1Win: 'stages/game1_win01.jpeg',
+        stage2Win: 'stages/game2_win01.jpeg',
+        lose: 'stages/game_lose.jpeg',
+        happyEnding: 'stages/happyending.jpeg',
+      };
+      const stageImages = new Map();
+      const bossStage2Image = new Image();
+      bossStage2Image.src = 'character/boss2.PNG';
+      const bossStage2BombImage = new Image();
+      bossStage2BombImage.src = 'character/boss2_bomb.PNG';
+      const gameplayBackgroundImage = new Image();
+      gameplayBackgroundImage.src = 'stages/background.png';
+      function getStage2BossSize(){
+        const targetW = Math.round(88 * 6);
+        const targetH = Math.round(52 * 6);
+        if(!(bossStage2Image.complete && bossStage2Image.naturalWidth>0 && bossStage2Image.naturalHeight>0)){
+          return { w: targetW, h: targetH };
+        }
+        const scale = Math.min(targetW / bossStage2Image.naturalWidth, targetH / bossStage2Image.naturalHeight);
+        return {
+          w: Math.max(1, Math.round(bossStage2Image.naturalWidth * scale)),
+          h: Math.max(1, Math.round(bossStage2Image.naturalHeight * scale)),
+        };
+      }
+      function preloadCharacterImages(){
+        for(const ch of CHARACTERS){
+          const src = CHARACTER_IMAGE_PATHS[ch.id];
+          const img = new Image();
+          if(src) img.src = src;
+          characterImages.set(ch.id, img);
+        }
+      }
+      function preloadStageImages(){
+        for(const key of Object.keys(STAGE_IMAGES)){
+          const img = new Image();
+          img.src = STAGE_IMAGES[key];
+          stageImages.set(key, img);
+        }
+      }
+      const STAGE_CONFIGS = {
+        1: { hp: 50, speed: 120, dropMin: .45, dropMax: 1.05 },
+        2: { hp: 80, speed: 180, dropMin: .25, dropMax: .7 },
+      };
+      const FACE_SPRITES = {
+        cowcat:["...F..F.....","..FF..FF....",".FFFWWFFF...","FFFFWWFFFF..","FFFDFDFFFF..","FFFF..FFFF..","FFF.D..DFF..","FFF..AAFFF..","FFFF....FFFF",".FFFFFFFFFF.","..FFFFFFFF..","...FFFFFF..."],
+        wizard:["...DDDDDD...","..DDDDADDD..",".DDDDDDDDDD.","...FFFFF....","..FFFFFFF...",".FFFWWWWFFF.",".FFFD..DFFF.",".FFF.D..DFF.",".FFFF.AFFFF.","..FFFFFFFF..","...FFFFFF...","....FFFF...."],
+        knight:["...FFFFFF...","..FFFFFFFF..",".FFFFFFFFFF.",".FFFFWWFFFF.",".FFFAAA.AFFF.",".FFFAADDAFFF.",".FFFAADDAFFF.",".FFFF..FFFF..","..FFF....FFF.","..FFFFFFFFFF.","...FFFFFFF...","....FFFFF...."],
+        cinn:["F.........F..","FF..F..F..FF.",".F.FFFFFF.F..","..FFFFFFF....",".FFFWWWWFFF..",".FFFD..DFFF..",".FFF.D..DFF..",".FFFF.AFFFF..",".FFF..AAFFF..","..FFFFFFFFF..","...FFFFFFF...","....FFFFF...."],
+      };
+      function drawSprite(g,sprite,palette,x,y,scale){
+        for(let r=0;r<(sprite||[]).length;r++){ const row=sprite[r];
+          for(let c=0;c<row.length;c++){ const ch=row[c]; if(ch==='.'||!palette[ch]) continue;
+            g.fillStyle=palette[ch]; g.fillRect(x+c*scale,y+r*scale,scale,scale);
+          }
+        }
+      }
+      function makeAvatarCanvas(char){
+        const c=document.createElement('canvas'); c.width=96; c.height=64;
+        const g=c.getContext('2d'); g.imageSmoothingEnabled=false;
+        g.fillStyle='rgba(0,0,0,0.22)'; g.fillRect(0,0,c.width,c.height);
+        const palette={F:char.c1,D:char.c2,A:char.acc,W:'#ffffff'};
+        drawSprite(g, FACE_SPRITES[char.id]||FACE_SPRITES.cowcat, palette, 24, 8, 4);
+        g.fillStyle='rgba(124,247,255,0.35)'; for(let i=0;i<10;i++) g.fillRect(0,56+i,c.width,1);
+        return c;
+      }
+      const avatarCanvases = new Map(CHARACTERS.map(ch => [ch.id, makeAvatarCanvas(ch)]));
+
+      const game = {
+        state:'select', t:0, shake:0, stars:[], boss:null, players:[], bullets:[], bombs:[], fx:[],
+        selected:{p1:null,p2:null}, input:{p1Left:false,p1Right:false,p1Fire:false,p2Left:false,p2Right:false,p2Fire:false},
+        cooldowns:{p1:0,p2:0,bossBomb:0},
+        stage:1,
+        nnnBuffer:'',
+        mmmBuffer:'',
+      };
+      function initStars(){ game.stars=[]; for(let i=0;i<180;i++) game.stars.push({x:Math.random()*W,y:Math.random()*H,s:rand(.6,2.6),sp:rand(8,26),c:Math.random()<.5?COLORS.neon1:COLORS.neon2}); }
+      function makePlayer(idx,charId,x){ const ch=CHARACTERS.find(c=>c.id===charId)||CHARACTERS[0]; return {idx,charId:ch.id,name:ch.name,x:x-38,y:H-122,w:76,h:88,vx:0,speed:260,lives:3,inv:0,color:idx===1?COLORS.neon1:COLORS.neon2}; }
+      function resetPlay(stageNo=game.stage){
+        game.stage = stageNo;
+        const cfg = STAGE_CONFIGS[stageNo] || STAGE_CONFIGS[1];
+        const bossSize = stageNo===2 ? getStage2BossSize() : { w: 88, h: 52 };
+        game.boss={x:W/2-bossSize.w/2,y:stageNo===2?42:54,w:bossSize.w,h:bossSize.h,vx:cfg.speed,hp:cfg.hp,maxHp:cfg.hp,dropMin:cfg.dropMin,dropMax:cfg.dropMax};
+        game.players=[makePlayer(1,game.selected.p1,W*.35), makePlayer(2,game.selected.p2,W*.65)];
+        game.bullets=[]; game.bombs=[]; game.fx=[]; game.t=0; game.cooldowns.p1=0; game.cooldowns.p2=0; game.cooldowns.bossBomb=rand(game.boss.dropMin,game.boss.dropMax); updateHUD();
+      }
+      function renderLives(el,l){ el.innerHTML=''; for(let i=0;i<3;i++){ const d=document.createElement('div'); d.className='heart'+(i<l?'':' empty'); el.appendChild(d);} }
+      function updateHUD(){
+        if(!game.boss){ bossHpText.textContent='50'; bossHpMax.textContent='50'; bossHpFill.style.transform='scaleX(1)'; return; }
+        bossHpMax.textContent=String(game.boss.maxHp);
+        bossHpText.textContent=String(game.boss.hp); bossHpFill.style.transform=`scaleX(${clamp(game.boss.hp/game.boss.maxHp,0,1)})`;
+        p1NameEl.textContent=game.players[0]?.name?`(${game.players[0].name})`:'?'; p2NameEl.textContent=game.players[1]?.name?`(${game.players[1].name})`:'?';
+        renderLives(p1LivesEl, game.players[0]?.lives??0); renderLives(p2LivesEl, game.players[1]?.lives??0);
+      }
+      function showOverlaySelect(){
+        overlay.classList.remove('hidden'); game.state='select';
+        overlay.onclick = null;
+        panel.innerHTML = `<div class="title">像素双人打飞机</div>
+          <div class="sub">先为 <b>玩家1</b> 与 <b>玩家2</b> 各选择一个角色（共 4 个），然后开始游戏。</div>
+          <div class="grid" id="charGrid"></div>
+          <div class="row"><div class="pick">
+            <div class="pill">玩家1：<b id="pickP1">未选择</b></div>
+            <div class="pill">玩家2：<b id="pickP2">未选择</b></div>
+            <div class="pill">规则：反派 HP=0 则 <b style="color: var(--ok)">GAME WIN</b>；两名玩家 HP 都=0 则 <b style="color: var(--danger)">GAME OVER</b></div>
+          </div><div class="pick">
+            <button class="btn secondary" id="resetPick">重选</button>
+            <button class="btn" id="startBtn" disabled>开始游戏</button>
+          </div></div>
+          <div class="help">- <b>反派</b>：顶部左右移动，随机丢炸弹（命中玩家 -1）。<br/>- <b>玩家1</b>：<span class="kbd">A</span>/<span class="kbd">D</span> 移动，<span class="kbd">Space</span> 发射。<br/>- <b>玩家2</b>：<span class="kbd">9</span>/<span class="kbd">0</span> 移动（或 <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>），<span class="kbd">=</span> 发射。</div>`;
+        const grid=panel.querySelector('#charGrid'), pickP1=panel.querySelector('#pickP1'), pickP2=panel.querySelector('#pickP2'), startBtn=panel.querySelector('#startBtn');
+        function rerenderPick(){
+          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? '未选择';
+          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? '未选择';
+          startBtn.disabled = !(game.selected.p1 && game.selected.p2 && game.selected.p1 !== game.selected.p2);
+          grid.querySelectorAll('.card').forEach(card => {
+            card.classList.remove('selectedP1','selectedP2');
+            if(card.dataset.id===game.selected.p1) card.classList.add('selectedP1');
+            if(card.dataset.id===game.selected.p2) card.classList.add('selectedP2');
+          });
+        }
+        grid.innerHTML='';
+        for(const ch of CHARACTERS){
+          const card=document.createElement('div'); card.className='card'; card.dataset.id=ch.id;
+          const src=CHARACTER_IMAGE_PATHS[ch.id];
+          const av=avatarCanvases.get(ch.id);
+          card.innerHTML = `<div class="thumb-wrap">${src?`<img alt="${ch.name}" src="${src}" class="thumb" />`:(av?`<img alt="" src="${av.toDataURL()}" class="thumb" />`:'')}</div>
+            <div class="name">${ch.name}</div>`;
+          card.addEventListener('click', () => {
+            if(!game.selected.p1) game.selected.p1=ch.id;
+            else if(game.selected.p1===ch.id){ if(!game.selected.p2) game.selected.p2=ch.id; else game.selected.p1=null; }
+            else if(!game.selected.p2) game.selected.p2=ch.id;
+            else if(game.selected.p2===ch.id) game.selected.p2=null;
+            else game.selected.p2=ch.id;
+            rerenderPick();
+          });
+          grid.appendChild(card);
+        }
+        panel.querySelector('#resetPick').addEventListener('click',()=>{game.selected.p1=null; game.selected.p2=null; rerenderPick();});
+        startBtn.addEventListener('click',()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(1); });
+        rerenderPick();
+      }
+      function showOverlayStage2Select(){
+        overlay.classList.remove('hidden'); game.state='select';
+        overlay.onclick = null;
+        game.selected.p1 = null;
+        game.selected.p2 = null;
+        panel.innerHTML = `<div class="title">第二局角色选择</div>
+          <div class="sub">请选择第二局角色。<b style="color:var(--danger)">宠物 Mr.Star已黑化，无法使用。</b></div>
+          <div class="grid" id="charGrid"></div>
+          <div class="row"><div class="pick">
+            <div class="pill">玩家1：<b id="pickP1">未选择</b></div>
+            <div class="pill">玩家2：<b id="pickP2">未选择</b></div>
+          </div><div class="pick">
+            <button class="btn secondary" id="resetPick">重选</button>
+            <button class="btn" id="startBtn" disabled>开始第二局</button>
+          </div></div>`;
+        const grid=panel.querySelector('#charGrid'), pickP1=panel.querySelector('#pickP1'), pickP2=panel.querySelector('#pickP2'), startBtn=panel.querySelector('#startBtn');
+        function rerenderPick(){
+          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? '未选择';
+          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? '未选择';
+          startBtn.disabled = !(game.selected.p1 && game.selected.p2 && game.selected.p1 !== game.selected.p2);
+          grid.querySelectorAll('.card').forEach(card => {
+            card.classList.remove('selectedP1','selectedP2');
+            if(card.dataset.id===game.selected.p1) card.classList.add('selectedP1');
+            if(card.dataset.id===game.selected.p2) card.classList.add('selectedP2');
+          });
+        }
+        grid.innerHTML='';
+        for(const ch of CHARACTERS){
+          const isLocked = ch.id === 'cinn';
+          const card=document.createElement('div'); card.className='card'; if(isLocked) card.classList.add('locked'); card.dataset.id=ch.id;
+          const src=isLocked ? 'character/boss2.PNG' : CHARACTER_IMAGE_PATHS[ch.id];
+          const av=avatarCanvases.get(ch.id);
+          card.innerHTML = `<div class="thumb-wrap">${src?`<img alt="${ch.name}" src="${src}" class="thumb ${isLocked?'thumb-zoom-2x':''}" />`:(av?`<img alt="" src="${av.toDataURL()}" class="thumb" />`:'')}${isLocked?'<span class="badge-evil">BETRAYED</span>':''}</div>
+            <div class="name">${ch.name}</div>`;
+          if(!isLocked){
+            card.addEventListener('click', () => {
+              if(!game.selected.p1) game.selected.p1=ch.id;
+              else if(game.selected.p1===ch.id){ if(!game.selected.p2) game.selected.p2=ch.id; else game.selected.p1=null; }
+              else if(!game.selected.p2) game.selected.p2=ch.id;
+              else if(game.selected.p2===ch.id) game.selected.p2=null;
+              else game.selected.p2=ch.id;
+              rerenderPick();
+            });
+          }
+          grid.appendChild(card);
+        }
+        panel.querySelector('#resetPick').addEventListener('click',()=>{game.selected.p1=null; game.selected.p2=null; rerenderPick();});
+        startBtn.addEventListener('click',()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(2); });
+        rerenderPick();
+      }
+      function renderStageResultScreen({ imagePath, title, sub, primaryLabel, onPrimary, secondaryLabel, onSecondary }){
+        overlay.classList.remove('hidden');
+        game.state='result';
+        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">${title}</div>
+          <div class="sub">${sub}</div>
+          <div class="row" style="margin-top:14px; justify-content:center">
+            <img alt="" src="${imagePath}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
+          </div>
+          <div class="row" style="margin-top:16px"><div class="pick">
+            <div class="pill">玩家1：<b>${game.players[0]?.name??'-'}</b>（HP ${game.players[0]?.lives??0}/3）</div>
+            <div class="pill">玩家2：<b>${game.players[1]?.name??'-'}</b>（HP ${game.players[1]?.lives??0}/3）</div>
+            <div class="pill">第 ${game.stage} 局 · 反派 HP <b>${game.boss?.hp??0}</b>/${game.boss?.maxHp??'-'}</div>
+          </div><div class="pick">
+            ${secondaryLabel?`<button class="btn secondary" id="secondaryBtn">${secondaryLabel}</button>`:''}
+            <button class="btn" id="primaryBtn">${primaryLabel}</button>
+          </div></div>`;
+        panel.querySelector('#primaryBtn').addEventListener('click', onPrimary);
+        const secondaryBtn = panel.querySelector('#secondaryBtn');
+        if(secondaryBtn && onSecondary) secondaryBtn.addEventListener('click', onSecondary);
+      }
+      function showFirstStageWin(){
+        renderStageResultScreen({
+          imagePath: STAGE_IMAGES.stage1Win,
+          title: '第一局通关',
+          sub: '点击任意处、按空格或回车进入第二局',
+          primaryLabel: '进入第二局',
+          onPrimary: ()=>{ showOverlayStage2Select(); },
+          secondaryLabel: '回到角色选择',
+          onSecondary: ()=>showOverlaySelect(),
+        });
+        const continueToStage2 = ()=>{ if(game.state!=='result') return; showOverlayStage2Select(); };
+        overlay.onclick = continueToStage2;
+      }
+      function showFirstStageLose(){
+        renderStageResultScreen({
+          imagePath: STAGE_IMAGES.lose,
+          title: '第一局失败',
+          sub: '是否重新玩第二局？',
+          primaryLabel: '重新玩第二局',
+          onPrimary: ()=>{ showOverlayStage2Select(); },
+          secondaryLabel: '重开第一局',
+          onSecondary: ()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(1); },
+        });
+        overlay.onclick = null;
+      }
+      function showSecondStageWin(){
+        overlay.classList.remove('hidden');
+        game.state='result';
+        overlay.onclick = null;
+        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">第二局通关</div>
+          <div class="sub">你们成功击败了黑化 Mr.Star。</div>
+          <div class="row" style="margin-top:14px; justify-content:center">
+            <img alt="" src="${STAGE_IMAGES.stage2Win}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
+          </div>
+          <div class="row" style="margin-top:16px; justify-content:center">
+            <button class="btn" id="happyEndingBtn">HAPPY ENDING</button>
+          </div>`;
+        panel.querySelector('#happyEndingBtn').addEventListener('click', ()=>showHappyEndingDialog());
+      }
+      function showHappyEndingDialog(){
+        overlay.classList.remove('hidden');
+        game.state='result';
+        overlay.onclick = null;
+        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">HAPPY ENDING</div>
+          <div class="sub">通关对话</div>
+          <div class="row" style="margin-top:14px; justify-content:center">
+            <img alt="" src="${STAGE_IMAGES.happyEnding}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
+          </div>
+          <div class="row" style="margin-top:16px; justify-content:center">
+            <button class="btn secondary" id="backSelectBtn">回到角色选择</button>
+          </div>`;
+        panel.querySelector('#backSelectBtn').addEventListener('click', ()=>showOverlaySelect());
+      }
+      function showSecondStageLose(){
+        renderStageResultScreen({
+          imagePath: STAGE_IMAGES.lose,
+          title: '第二局失败',
+          sub: '是否重新玩第二局？',
+          primaryLabel: '重新玩第二局',
+          onPrimary: ()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(2); },
+          secondaryLabel: '回到角色选择',
+          onSecondary: ()=>showOverlaySelect(),
+        });
+        overlay.onclick = null;
+      }
+      function showOverlayEnd(kind){
+        if(kind==='win'){
+          if(game.stage===1) showFirstStageWin();
+          else showSecondStageWin();
+        } else {
+          if(game.stage===1) showFirstStageLose();
+          else showSecondStageLose();
+        }
+      }
+      function drawBackground(dt){
+        if(gameplayBackgroundImage.complete && gameplayBackgroundImage.naturalWidth>0){
+          const iw = gameplayBackgroundImage.naturalWidth;
+          const ih = gameplayBackgroundImage.naturalHeight;
+          const scale = Math.max(W / iw, H / ih);
+          const dw = iw * scale;
+          const dh = ih * scale;
+          const dx = (W - dw) / 2;
+          const dy = (H - dh) / 2;
+          ctx.drawImage(gameplayBackgroundImage, dx, dy, dw, dh);
+          return;
+        }
+        const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,COLORS.sky1); g.addColorStop(1,COLORS.sky2); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+        for(const s of game.stars){ s.y+=s.sp*dt; if(s.y>H+6){s.y=-6; s.x=Math.random()*W;} drawPixelRect(s.x,s.y,s.s,s.s,Math.random()<.5?'rgba(231,246,255,0.55)':s.c); }
+        const horizon=H*0.62; ctx.save(); ctx.globalAlpha=.18;
+        for(let y=0;y<18;y++){ const yy=horizon+y*16; ctx.strokeStyle=y%2===0?COLORS.neon1:COLORS.neon2; ctx.beginPath(); ctx.moveTo(0,yy); ctx.lineTo(W,yy); ctx.stroke(); }
+        for(let x=0;x<40;x++){ const xx=(x*28+(game.t*120))%(W+120)-60; ctx.strokeStyle=x%2===0?COLORS.neon2:COLORS.neon1; ctx.beginPath(); ctx.moveTo(xx,horizon); ctx.lineTo(W/2+(xx-W/2)*3.2,H); ctx.stroke(); }
+        ctx.restore();
+      }
+      function drawBoss(b){
+        const x=Math.round(b.x), y=Math.round(b.y);
+        if(game.stage===2 && bossStage2Image.complete && bossStage2Image.naturalWidth>0){
+          ctx.save();
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(bossStage2Image, x, y, b.w, b.h);
+          ctx.restore();
+          return;
+        }
+        drawPixelRect(x+px*2,y+px*3,b.w-px*4,b.h-px*8,'#ff4d6d'); drawPixelRect(x+px*6,y+px*1,b.w-px*12,px*4,'#ff9b3d'); drawPixelRect(x+px*8,y+px*7,b.w-px*16,px*6,'#7cf7ff'); drawPixelRect(x,y+px*10,px*6,px*8,'#ff9b3d'); drawPixelRect(x+b.w-px*6,y+px*10,px*6,px*8,'#ff9b3d'); drawPixelRect(x+px*10,y+px*9,px*2,px*2,COLORS.black); drawPixelRect(x+b.w-px*12,y+px*9,px*2,px*2,COLORS.black);
+      }
+      function drawPlayerShip(p){
+        if(p.inv>0 && (Math.floor(game.t*18)%2===0)) return;
+        const x=Math.round(p.x), y=Math.round(p.y);
+        const ch=CHARACTERS.find(c=>c.id===p.charId)||CHARACTERS[0];
+        const portrait = characterImages.get(ch.id);
+        if(portrait && portrait.complete && portrait.naturalWidth>0){
+          ctx.save();
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(portrait, x, y, p.w, p.h);
+          ctx.restore();
+        } else {
+          drawPixelRect(x, y, p.w, p.h, 'rgba(255,255,255,0.2)');
+        }
+      }
+      const drawBullet=b=>{ drawPixelRect(b.x,b.y,b.w,b.h,b.color); drawPixelRect(b.x+px,b.y+px,b.w-px*2,b.h-px*2,COLORS.white); };
+      const drawBomb=bb=>{
+        const x=Math.round(bb.x), y=Math.round(bb.y);
+        if(game.stage===2 && bossStage2BombImage.complete && bossStage2BombImage.naturalWidth>0){
+          ctx.save();
+          ctx.imageSmoothingEnabled = false;
+          ctx.drawImage(bossStage2BombImage, x, y, bb.w, bb.h);
+          ctx.restore();
+          return;
+        }
+        drawPixelRect(x,y,bb.w,bb.h,COLORS.black); drawPixelRect(x+px,y+px,bb.w-px*2,bb.h-px*2,COLORS.red); drawPixelRect(x+px*2,y+px*2,px,px,COLORS.neon2);
+      };
+      const spawnBullet=p=>game.bullets.push({x:p.x+p.w/2-px*1.5,y:p.y-px*2,w:px*3,h:px*8,vy:-520,color:p.idx===1?COLORS.neon1:COLORS.neon2});
+      const spawnBomb=()=>game.bombs.push({x:game.boss.x+game.boss.w/2-px*3,y:game.boss.y+game.boss.h-px*2,w:px*6,h:px*6,vy:rand(260,380)});
+      function hurtPlayer(p){ if(p.lives<=0||p.inv>0) return; p.lives=Math.max(0,p.lives-1); p.inv=.9; game.shake=.18; game.fx.push({t:0,x:p.x+p.w/2,y:p.y+p.h/2,color:COLORS.red}); updateHUD(); }
+      function hurtBoss(){ if(!game.boss) return; game.boss.hp=Math.max(0,game.boss.hp-1); game.fx.push({t:0,x:game.boss.x+game.boss.w/2,y:game.boss.y+game.boss.h/2,color:COLORS.neon2}); if(game.boss.hp<=0){ game.state='win'; showOverlayEnd('win'); } updateHUD(); }
+      const allPlayersDead=()=>game.players.every(p=>p.lives<=0);
+      function update(dt){
+        game.t+=dt; if(game.shake>0) game.shake=Math.max(0,game.shake-dt);
+        const b=game.boss; b.x+=b.vx*dt; if(b.x<24){b.x=24; b.vx*=-1;} if(b.x+b.w>W-24){b.x=W-24-b.w; b.vx*=-1;}
+        game.cooldowns.bossBomb-=dt; if(game.cooldowns.bossBomb<=0){ spawnBomb(); game.cooldowns.bossBomb=rand(b.dropMin,b.dropMax); }
+        for(const p of game.players) p.inv=Math.max(0,p.inv-dt);
+        const p1=game.players[0], p2=game.players[1]; p1.vx=(game.input.p1Right?1:0)-(game.input.p1Left?1:0); p2.vx=(game.input.p2Right?1:0)-(game.input.p2Left?1:0);
+        for(const p of game.players){ if(p.lives<=0) continue; p.x += p.vx*p.speed*dt; p.x = clamp(p.x,14,W-14-p.w); }
+        game.cooldowns.p1=Math.max(0,game.cooldowns.p1-dt); game.cooldowns.p2=Math.max(0,game.cooldowns.p2-dt);
+        if(game.input.p1Fire && game.cooldowns.p1<=0 && p1.lives>0){ spawnBullet(p1); game.cooldowns.p1=.16; }
+        if(game.input.p2Fire && game.cooldowns.p2<=0 && p2.lives>0){ spawnBullet(p2); game.cooldowns.p2=.16; }
+        for(const blt of game.bullets) blt.y += blt.vy*dt;
+        game.bullets = game.bullets.filter(blt => blt.y + blt.h > -20);
+        for(const blt of game.bullets){ if(aabb(blt,{x:b.x,y:b.y,w:b.w,h:b.h})){ blt._dead=true; hurtBoss(); } }
+        game.bullets = game.bullets.filter(x => !x._dead);
+        for(const bb of game.bombs) bb.y += bb.vy*dt;
+        for(const bb of game.bombs){ for(const p of game.players){ if(p.lives<=0) continue; if(aabb(bb,p)){ bb._dead=true; hurtPlayer(p); } } }
+        game.bombs = game.bombs.filter(bb => !bb._dead && bb.y < H + 30);
+        for(const f of game.fx) f.t += dt; game.fx = game.fx.filter(f => f.t < .5);
+        if(allPlayersDead()){ game.state='over'; showOverlayEnd('over'); }
+      }
+      function drawFX(){ for(const f of game.fx){ const k=1-f.t/.5; ctx.save(); ctx.globalAlpha=.9*k; ctx.strokeStyle=f.color; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(f.x,f.y,8+26*(1-k),0,Math.PI*2); ctx.stroke(); ctx.restore(); } }
+      function drawScene(dt){
+        drawBackground(dt);
+        if(game.shake>0){ const s=Math.round(game.shake*10); ctx.save(); ctx.translate((Math.random()*2-1)*s,(Math.random()*2-1)*s); drawBoss(game.boss); for(const bb of game.bombs) drawBomb(bb); for(const blt of game.bullets) drawBullet(blt); for(const p of game.players) drawPlayerShip(p); drawFX(); ctx.restore(); }
+        else { drawBoss(game.boss); for(const bb of game.bombs) drawBomb(bb); for(const blt of game.bullets) drawBullet(blt); for(const p of game.players) drawPlayerShip(p); drawFX(); }
+        drawText(16,H-18,`STAGE ${game.stage} · BOSS HP ${game.boss.hp}/${game.boss.maxHp}`,'rgba(231,246,255,0.85)',2);
+      }
+      let last=0; function loop(ts){ const now=ts/1000; if(!last) last=now; const dt=clamp(now-last,0,.033); last=now;
+        if(game.state==='playing'){ update(dt); drawScene(dt); } else { game.t+=dt; drawBackground(dt); if(game.boss&&game.players.length){ drawBoss(game.boss); for(const p of game.players) drawPlayerShip(p);} }
+        requestAnimationFrame(loop);
+      }
+      window.addEventListener('keydown',(e)=>{
+        const isP2Left = evt => evt.code==='Digit9'||evt.code==='Numpad9';
+        const isP2Right = evt => evt.code==='Digit0'||evt.code==='Numpad0';
+        if(e.key && e.key.length===1){
+          game.nnnBuffer = (game.nnnBuffer + e.key.toLowerCase()).slice(-3);
+          game.mmmBuffer = (game.mmmBuffer + e.key.toLowerCase()).slice(-3);
+          if(game.nnnBuffer==='nnn'){
+            game.nnnBuffer='';
+            game.mmmBuffer='';
+            game.stage = 1;
+            if(!game.boss || !game.players.length) resetPlay(1);
+            showFirstStageWin();
+            return;
+          }
+          if(game.mmmBuffer==='mmm'){
+            game.mmmBuffer='';
+            game.nnnBuffer='';
+            game.stage = 2;
+            if(!game.boss || !game.players.length) resetPlay(2);
+            showSecondStageWin();
+            return;
+          }
+        }
+        if(e.code==='KeyR'){
+          if(game.state==='playing') resetPlay(game.stage);
+          else if(game.state==='result'){ overlay.classList.add('hidden'); game.state='playing'; resetPlay(game.stage); }
+        }
+        if(game.state==='result' && game.stage===1 && game.boss?.hp<=0 && (e.code==='Space' || e.code==='Enter')){
+          e.preventDefault();
+          showOverlayStage2Select();
+          return;
+        }
+        if(game.state!=='playing') return;
+        if(e.code==='KeyA') game.input.p1Left=true; if(e.code==='KeyD') game.input.p1Right=true; if(e.code==='Space'){ game.input.p1Fire=true; e.preventDefault(); }
+        if(isP2Left(e)) game.input.p2Left=true; if(isP2Right(e)) game.input.p2Right=true; if(e.code==='Equal') game.input.p2Fire=true;
+      }, {passive:false});
+      window.addEventListener('keyup',(e)=>{
+        const isP2Left = evt => evt.code==='Digit9'||evt.code==='Numpad9';
+        const isP2Right = evt => evt.code==='Digit0'||evt.code==='Numpad0';
+        if(e.code==='KeyA') game.input.p1Left=false; if(e.code==='KeyD') game.input.p1Right=false; if(e.code==='Space') game.input.p1Fire=false;
+        if(isP2Left(e)) game.input.p2Left=false; if(isP2Right(e)) game.input.p2Right=false; if(e.code==='Equal') game.input.p2Fire=false;
+      });
+      preloadCharacterImages();
+      preloadStageImages();
+      initStars(); game.selected.p1=CHARACTERS[0].id; game.selected.p2=CHARACTERS[1].id; resetPlay(1); showOverlaySelect(); requestAnimationFrame(loop);
+    })();
+  </script>
+</body>
+</html>
