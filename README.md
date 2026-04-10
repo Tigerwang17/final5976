@@ -1,76 +1,82 @@
-# 像素双人打飞机（Dungeon Game）
+# Pixel Co-op Shooter (Dungeon Game)
 
-一个纯前端、零依赖的双人本地合作小游戏。  
-打开 `index.html` 即可游玩，支持角色选择、两关 Boss 战、结算页与 Happy Ending。
+A zero-dependency, browser-only two-player local co-op mini game. Open `index.html` to play—character select, two boss stages, result screens, and a Happy Ending.
 
-## 项目特点
+## Features
 
-- 单文件实现：HTML + CSS + JavaScript 全部写在 `index.html`
-- 双人同屏操作：玩家 1、玩家 2 各自独立移动与发射
-- 角色选择系统：开局为两位玩家分别选择角色
-- 两阶段关卡：第一局通关后进入第二局（含特殊限制）
-- 完整 HUD：Boss 血条、玩家角色名、生命值（心形显示）
-- 图片资源预加载：角色图、关卡图、背景图、Boss 图
+- **Single file**: HTML, CSS, and JavaScript live in `index.html`
+- **Same-screen co-op**: Player 1 and Player 2 move and shoot independently
+- **Character select**: Pick a character for each player before starting
+- **Two stages**: Beat stage 1 to unlock stage 2 (with a special restriction)
+- **HUD**: Boss HP bar, character names, and lives (hearts)
+- **Preloaded assets**: Character art, stage art, background, and boss sprites
 
-## 运行方式
+## Quick start
 
-无需安装依赖，直接使用浏览器打开：
+No build step or package manager required.
 
-1. 进入项目目录
-2. 双击 `index.html`，或拖拽到浏览器中
+1. Clone or download this repository
+2. Open `index.html` in a modern browser (double-click or drag into the window)
 
-> 建议使用 Chrome / Edge / Safari 最新版本。
+Use a recent **Chrome**, **Edge**, or **Safari** for best results.
 
-## 操作说明
+## Controls
 
-### 玩家 1
+### Player 1
 
-- `A` / `D`：左右移动
-- `Space`：发射子弹
+- `A` / `D` — move left / right
+- `Space` — fire
 
-### 玩家 2
+### Player 2
 
-- `9` / `0`（或 `Numpad9` / `Numpad0`）：左右移动
-- `=`：发射子弹
+- `9` / `0` (or `Numpad9` / `Numpad0`) — move left / right
+- `=` — fire
 
-### 通用按键
+### Both players
 
-- `R`：重开当前局（在结果页也可重新开始当前阶段）
+- `R` — restart the current stage (also works from some result screens)
 
-## 胜负规则
+## Win & lose
 
-- **胜利**：Boss HP 归零
-- **失败**：两名玩家生命值都归零
+- **Win**: Boss HP reaches zero
+- **Lose**: Both players run out of lives
 
-## 关卡流程
+## Progression
 
-1. 进入角色选择面板，分别为玩家 1 和玩家 2 选择角色
-2. 第一局通关后进入第二局角色选择
-3. 第二局中 `宠物 Mr.Star` 黑化为反派（不可选）
-4. 第二局通关后可进入 `HAPPY ENDING` 结局画面
+1. On the overlay, choose characters for Player 1 and Player 2
+2. After clearing stage 1, pick characters again for stage 2
+3. In stage 2, **Mr. Star** is corrupted and **cannot** be selected
+4. After clearing stage 2, open the **HAPPY ENDING** screen
 
-## 隐藏指令（调试/彩蛋）
+## Easter eggs (debug / cheats)
 
-- 连续输入 `nnn`：触发第一局通关画面
-- 连续输入 `mmm`：触发第二局通关画面
+- Type **`nnn`** in sequence — jump to the stage 1 clear screen
+- Type **`mmm`** in sequence — jump to the stage 2 clear screen
 
-## 资源路径约定
+## Asset layout
 
-代码中使用了以下资源目录（相对于 `index.html`）：
+Paths are **relative to `index.html`**:
 
-- `character/`：角色与 Boss 图片
-- `stages/`：关卡背景、胜负结算图、结局图
+| Folder       | Contents                                      |
+| ------------ | --------------------------------------------- |
+| `character/` | Player and boss images                        |
+| `stages/`    | Background, win/lose art, ending illustration |
 
-请确保这些图片文件存在且路径大小写与代码一致（如 `PNG` / `jpeg`）。
+File names are **case-sensitive** on many hosts (e.g. Linux/GitHub Pages). Keep extensions exactly as in code (`PNG`, `jpeg`, etc.).
 
-## 主要文件
+## Project layout
 
-- `index.html`：游戏主文件（UI、渲染、逻辑、输入、状态机）
+| File         | Role                                                |
+| ------------ | --------------------------------------------------- |
+| `index.html` | UI, canvas rendering, game logic, input, overlays |
 
-## 后续可扩展方向
+## Deploying (optional)
 
-- 增加音效与背景音乐
-- 增加第三关或 Boss 技能模式
-- 增加角色技能差异（攻速、弹道、生命）
-- 增加暂停菜单与键位自定义
+For static hosts (e.g. [GitHub Pages](https://pages.github.com/)), serve the repo root so `index.html` is the default document. No server-side code is required.
 
+## Possible extensions
+
+- Sound effects and background music
+- A third stage or boss attack patterns
+- Per-character stats (fire rate, bullet pattern, lives)
+- Pause menu and remappable keys
