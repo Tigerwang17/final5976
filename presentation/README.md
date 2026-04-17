@@ -54,7 +54,7 @@ This folder contains assets and notes for the final presentation (PPT / slides).
   - （填写整体反思）
 
 ### Slide 10 — Live Demo
-- Open `index.html` in browser
+- Open `final.html` in browser
 - Play prologue → enter game → show endings
 
 ---
@@ -65,7 +65,7 @@ This folder contains assets and notes for the final presentation (PPT / slides).
 |-----------|--------|--------|
 | Value/Novelty — state of the art technology, original code | 25% | （填写） |
 | GitHub repo — code works | 50% | ✅ |
-| GitHub repo — workflow documented | 50% | ✅ (workflow/ folders) |
+| GitHub repo — workflow documented | 50% | ✅ (group_work_contribution_and _workflow/ folders) |
 | GitHub repo — uses polyu-storyworld or MCP | 50% | ✅ (character data referenced) |
 | GitHub repo — well documented, all members contributed | 50% | ✅ |
 | Reflection — AI tools & production pipeline | 25% | （填写 — see workflow/*/reflection.md） |

@@ -1,6 +1,6 @@
 # Our Rations are All Stolen, So Why on Earth are We Still Adventuring in This Dungeon?
 
-**SDSC5976 Final Project**
+**SD5976 Final Project**
 
 ---
 

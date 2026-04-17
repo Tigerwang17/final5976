@@ -2,17 +2,17 @@
 
 **Responsible member:** （填写组员名字）
 **Character:** Oreo (Cat-folk Ninja Assassin)
-**Tasks:** Game code · Video integration in index.html · Win/lose logic · Workflow documentation
+**Tasks:** Game code · Video integration in final.html · Win/lose logic · Workflow documentation
 
 ---
 
 ## Deliverables
 
 - [x] Game code: `game/index.html` (two-player co-op boss battle)
-- [x] Root integration page: `index.html` (prologue → game → endings)
-- [ ] Oreo character segment (part of `videos/intro.mp4`)
-- [ ] Prompts documented: `workflow/oreo/prompts.md`
-- [ ] Reflection written: `workflow/oreo/reflection.md`
+- [x] Root integration page: `final.html` (prologue → game → endings)
+- [ ] Oreo character segment (part of `videos/prologue.mp4`)
+- [ ] Prompts documented: `group_work_contribution_and _workflow/WANGDongni/prompts.md`
+- [ ] Reflection written: `group_work_contribution_and _workflow/WANGDongni/reflection.md`
 
 ---
 
@@ -38,7 +38,7 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 - Mr. Star locked in Stage 2 (narrative reason: corruption)
 - Happy Ending screen after Stage 2 clear
 
-**Integration (`index.html`):**
+**Integration (`final.html`):**
 - Prologue video → Boss Battle game (iframe) → Ending video
 - Ending A plays on victory; Ending B plays on defeat
 - Navigation bar for all sections

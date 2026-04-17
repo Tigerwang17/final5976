@@ -8,12 +8,12 @@
 
 ## Deliverables
 
-- [ ] Enos character segment (part of `videos/intro.mp4`)
+- [ ] Enos character segment (part of `videos/prologue.mp4`)
 - [ ] Ending B video: `videos/ending_b.mp4`
 - [ ] Storyboard text: `storyboard/text/ending_b.md`
 - [ ] First/last frames: `storyboard/frames/ending_b/`
-- [ ] Prompts documented: `workflow/enos/prompts.md`
-- [ ] Reflection written: `workflow/enos/reflection.md`
+- [ ] Prompts documented: `group_work_contribution_and _workflow/SHENZiqi/prompts.md`
+- [ ] Reflection written: `group_work_contribution_and _workflow/SHENZiqi/reflection.md`
 
 ---
 

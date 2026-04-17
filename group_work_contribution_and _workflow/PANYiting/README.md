@@ -8,12 +8,12 @@
 
 ## Deliverables
 
-- [ ] Cheri character segment (part of `videos/intro.mp4`)
+- [ ] Cheri character segment (part of `videos/prologue.mp4`)
 - [ ] Ending A video: `videos/ending_a.mp4`
 - [ ] Storyboard text: `storyboard/text/ending_a.md`
 - [ ] First/last frames: `storyboard/frames/ending_a/`
-- [ ] Prompts documented: `workflow/cheri/prompts.md`
-- [ ] Reflection written: `workflow/cheri/reflection.md`
+- [ ] Prompts documented: `group_work_contribution_and _workflow/PANYiting/prompts.md`
+- [ ] Reflection written: `group_work_contribution_and _workflow/PANYiting/reflection.md`
 
 ---
 

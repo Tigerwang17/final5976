@@ -13,7 +13,7 @@ Documenting the first and last frame of each clip shows:
 
 ```
 frames/
-├── prologue/          # First/last frames for each clip in intro.mp4
+├── prologue/          # First/last frames for each clip in prologue.mp4
 ├── ending_a/          # First/last frames for each clip in ending_a.mp4
 └── ending_b/          # First/last frames for each clip in ending_b.mp4
 ```
