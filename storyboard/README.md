@@ -35,19 +35,16 @@ storyboard/
 
 ## Storyboard Summary — Scene by Scene
 
-### Prologue (~90 seconds, 9 scenes)
+### Prologue (~90 seconds, 6 scenes)
 
 | # | Scene | Duration | Key Beat |
 |---|-------|----------|----------|
-| P-01 | World Establishing Shot | ~10s | Dungeon aerial → interior corridor, world-building |
-| P-02 | Team March | ~10s | All 4 characters + Mr. Star peeking from backpack |
-| P-03 | Cheri's Flashback | ~10s | Temple life → walks out the gate alone |
-| P-04 | Enos's Introduction | ~10s | Specimen jars, thesis research excitement |
-| P-05 | Oreo's Introduction | ~10s | Shadow hunt, glowing medicine, memory of grandpa |
-| P-06 | Mr. Star's Secret | ~10s | "Sleeping" but absorbing dark power, star birthmark glows |
-| P-07 | Aftermath of Battle | ~10s | Team exhausted and asleep, food bags visible in foreground |
-| P-08 | Betrayal! Food Gone! | ~10s | Empty bags, Mr. Star with round belly and crumbs on face |
-| P-09 | Dark Power Rises | ~10s | Confrontation → Mr. Star begins transforming → leads to game |
+| P-01 | World + Team | ~15s | Dungeon aerial + all 4 characters + Mr. Star in backpack |
+| P-02 | Character Backstories Montage | ~15s | Cheri / Enos / Oreo intros + Mr. Star's secret hint |
+| P-03 | Betrayal Morning | ~15s | Empty food bags, round belly, comedic horror |
+| P-04 | Truth & Darkness | ~15s | Confrontation, dark power stirs but retreats — not yet |
+| P-05 | The Dragon Awaits | ~15s | Team approaches dragon chamber, doors explode → **Game Stage 1** |
+| P-06 | Dragon Falls, Darkness Rises | ~15s | Dragon defeated, Mr. Star absorbs dark power, transforms → **Game Stage 2** |
 
 ### Ending A — Victory (~60 seconds, 4 scenes)
 

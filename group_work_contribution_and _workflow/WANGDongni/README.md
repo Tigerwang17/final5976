@@ -33,14 +33,14 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 **Key features implemented:**
 - Two-player local co-op (Player 1: WASD+Space, Player 2: 90+=)
 - Character select screen for both players
-- Stage 1 and Stage 2 boss battles
+- Stage 1 boss: Dragon (恶龙) — team fights together
+- Stage 2 boss: Mr. Star in complete dark form — Mr. Star locked as unselectable (he is the enemy)
 - Win/lose overlays with result screens
-- Mr. Star locked in Stage 2 (narrative reason: corruption)
 - Happy Ending screen after Stage 2 clear
 
 **Integration (`final.html`):**
-- Prologue video → Boss Battle game (iframe) → Ending video
-- Ending A plays on victory; Ending B plays on defeat
+- Prologue video → Stage 1 Dragon game → cutscene → Stage 2 Mr. Star game → Ending video
+- Ending A plays on Stage 2 victory; Ending B plays on Stage 2 defeat
 - Navigation bar for all sections
 
 ---

@@ -12,9 +12,11 @@ An interactive narrative experience combining AI-generated short films and a bro
 
 The experience flows as:
 
-1. **Prologue / 序章 (AI short film ~90s):** Introduces the four characters, the dungeon world, Mr. Star's betrayal, and the beginning of his dark transformation
-2. **Boss Battle / Boss战 (mini-game):** Two players cooperate to fight the final Boss — Mr. Star in complete form
-3. **Ending / 结局 (AI short film ~60s):** Win → Ending A (victory, redemption); Lose → Ending B (defeat, 美食星球)
+1. **Prologue / 序章 (AI short film ~90s):** Introduces the four characters, the dungeon world, Mr. Star's betrayal, and the journey to the final chamber
+2. **Game Stage 1 / 游戏第一关:** Two players cooperate to defeat the Dragon — the dungeon's first great boss (恶龙)
+3. **Cutscene / 过场:** Dragon falls; Mr. Star absorbs its dark power and transforms into boss form
+4. **Game Stage 2 / 游戏第二关:** Fight Mr. Star in complete form — Mr. Star cannot be selected as a player character
+5. **Ending / 结局 (AI short film ~60s):** Win → Ending A (Mr. Star moved by teammates' bonds, expels dark power, adventure continues); Lose → Ending B (teammates defeated, world becomes 美食星球)
 
 **Total video runtime / 总视频时长: ~3.5 minutes (~210 seconds)**
 
@@ -48,7 +50,7 @@ Character reference: [polyu-storyworld](https://github.com/venetanji/polyu-story
 
 Enos leads a peculiar party deep into the underground dungeon for his graduation thesis. Mr. Star joins as the team mascot — incredibly huggable, and supposedly useful for detecting dark power. What the team does not know: Mr. Star was once human, his soul now possessing a 42cm dog-bear hybrid body, and his one true goal is to obtain the dungeon's dark power and turn the entire world into food.
 
-After surviving the brutal Void Hole challenge, the exhausted team falls asleep — and wakes to find every ration gone. Mr. Star, bloated and crumb-covered, can no longer hide the truth. The dark power claims him. The final battle begins.
+After surviving the brutal Void Hole challenge, the exhausted team falls asleep — and wakes to find every ration gone. Mr. Star, bloated and crumb-covered, can no longer hide the truth. The team pushes on regardless, reaching the dungeon's final chamber: the Dragon. When the dragon falls, its dark power floods into Mr. Star. The transformation begins. The real final battle starts.
 
 Enos率领一支奇特的队伍深入地下城收集毕业论文材料。Mr.Star以吉祥物身份加入——极其可爱，据说还能探测黑暗力量。队伍不知道的是：Mr.Star曾经是人类，灵魂寄居于一个42厘米的狗熊混血身体中，唯一目标是获得黑暗力量，把整个世界变成食物。
 

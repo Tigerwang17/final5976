@@ -3,172 +3,122 @@
 My contribution is writing all storyboard text prompts for the three video segments.
 Full bilingual (EN + 中文) prompt documents are in `storyboard/text/`.
 
-The actual video generation (using 即梦AI for keyframes and Lovart for video clips) is handled by other group members based on these written prompts.
+The actual video generation (using 即梦AI + Lovart) is handled by other group members based on these written prompts.
 
 ---
 
 ## How to Use These Prompts / 使用说明
 
 1. For each clip, go to the corresponding scene in `storyboard/text/`
-2. Use the **首帧 prompt** in 即梦AI to generate the starting keyframe image
-3. Use the **尾帧 prompt** in 即梦AI to generate the ending keyframe image
-4. Upload both images to **Lovart**, enter the **视频运作 motion prompt**, and generate the clip
-5. Recommended duration: 5–10s per clip
+2. Use the **首帧 prompt** in 即梦AI + Lovart to generate the starting keyframe image
+3. Use the **尾帧 prompt** in 即梦AI + Lovart to generate the ending keyframe image
+4. Upload both images with the **视频运作 motion prompt** to generate the clip
+5. Recommended duration: 10–15s per clip
 
 ---
 
-## Prologue Clips / 序章分镜
+## Prologue Clips / 序章分镜（6 clips）
 
-### Clip P-01 — World Establishing Shot / 世界建立镜头
+### Clip P-01 — World + Team Introduction / 世界与队伍登场
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 1
 
-**Motion Prompt (即梦AI / Lovart):**
+**Motion Prompt:**
 ```
-Slow cinematic downward zoom from aerial view of dungeon entrance, camera gradually descends through the archway entrance, gentle push-in through stone corridor, floating light particles drift upward past camera, torchlight flickers, atmosphere shifts from open to enclosed, smooth 10-second establishing shot, epic fantasy intro
+Opens with slow cinematic descent from dungeon aerial into the interior corridor, then dissolves into a sideways tracking shot alongside the walking group, gentle camera bob suggesting footsteps, camera gradually pushes in to Mr. Star's peeking face in the backpack, his nose twitches, ears wiggle, 15-second combined establishing and character introduction shot
 ```
 **视频运作中文提示词:**
 ```
-从地下城入口的航拍俯视角缓慢电影感向下推进，镜头逐渐降入拱门内，轻柔推进穿过石制走廊，漂浮光粒从镜头旁向上飘过，火炬摇曳，气氛从开阔转为幽闭，流畅10秒建立镜头，史诗幻想开场
+以缓慢电影感俯视下降进入地下城内走廊开场，然后溶入横向跟随行走队伍的移动镜头，轻柔镜头晃动模拟步伐，镜头逐渐推近Mr.Star从背包探出的脸，鼻子抽动，耳朵摆动，15秒建立镜头与角色介绍合并
 ```
 
 **Frame files:** `storyboard/frames/prologue/P01_start.png` · `P01_end.png`
 
 ---
 
-### Clip P-02 — Team March / 队伍行进
+### Clip P-02 — Character Backstories Montage / 角色背景蒙太奇
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 2
 
 **Motion Prompt:**
 ```
-Camera tracks sideways alongside the walking group, gentle horizontal pan, slight up-down camera bob suggesting footsteps, group moves from right to left of frame, camera gradually pushes in to focus on the backpack and Mr. Star's peeking face, Mr. Star's nose visibly twitches, ears wiggle slightly, natural walk cycle animation
+Quick montage rhythm: each character panel flashes in with a soft cut, brief 3-second hold per character — Cheri, Enos, Oreo — then camera swings to focus on Mr. Star in the backpack, slow zoom into his face and the star birthmark glow, dark energy particles drift toward him, ends on the subtle smug smile close-up, 15-second montage with tonal shift from warm to slightly ominous at the end
 ```
 **视频运作中文提示词:**
 ```
-镜头横向跟随行走的队伍，轻柔水平平移，镜头上下微微晃动模拟步伐节奏，队伍从右往左移动，镜头逐渐推近聚焦背包和Mr.Star的探头脸，Mr.Star鼻子明显抽动，耳朵轻轻摆动，自然行走循环动画
+快节奏蒙太奇：每个角色画面以柔和切入方式闪入，每人停留约3秒——Cheri、Enos、Oreo——然后镜头转向背包里的Mr.Star，缓缓推进至他的脸和星形胎记发光，幽暗能量粒子向他飘来，以微妙得意微笑特写收尾，15秒蒙太奇，结尾情绪从温暖向轻微不祥转变
 ```
 
 **Frame files:** `storyboard/frames/prologue/P02_start.png` · `P02_end.png`
 
 ---
 
-### Clip P-03 — Cheri's Flashback / Cheri 回忆闪回
+### Clip P-03 — Betrayal Morning / 背叛的早晨
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 3
 
 **Motion Prompt:**
 ```
-Slow pull-back from close-up of Cheri's face in meditation to reveal the full temple interior, soft dream-like transition overlay, then cut to Cheri at the gate — gentle breeze causes robes and petals to flutter, head turns slowly over shoulder, hold on expression, nostalgic soft-focus vignette, 10-second character introduction flashback
+Starts with slow pan across sleeping team and the prominently placed food bags building tension, then fast cut to morning: quick zoom-in on empty bags, snap cut to Mr. Star's round silhouette, push in to his guilty crumb-covered face, reaction shots of each teammate's horror expression in rapid sequence, expressive anime face effects, 15-second scene with slow-fast-slow rhythm
 ```
 **视频运作中文提示词:**
 ```
-从Cheri冥想脸部特写缓慢拉远揭示整个神殿内部，叠加柔和梦幻过渡效果，然后切至Cheri在大门处——微风使长袍和花瓣轻轻飘动，头缓缓转向肩后，停留在表情上，怀旧柔焦晕影，10秒角色介绍回忆闪回
+以缓慢平移过熟睡队伍和显眼食物袋开始积累紧张感，然后快切至早晨：快速推进空袋子特写，急切切入Mr.Star圆肚子剪影，推进至他愧疚沾满碎渣的脸，每位队友惊骇表情的快速反应镜头序列，夸张动漫面部效果，15秒场景配合慢-快-慢节奏
 ```
 
 **Frame files:** `storyboard/frames/prologue/P03_start.png` · `P03_end.png`
 
 ---
 
-### Clip P-04 — Enos Introduction / Enos 介绍
+### Clip P-04 — Truth & Darkness / 真相与黑暗
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 4
 
 **Motion Prompt:**
 ```
-Camera starts on wide shot of Enos at his cluttered specimen table, slowly pushes in as he writes notes with increasing excitement, he suddenly springs upright and holds jar to lantern light, sparkle burst effect on jar, camera settles on triumphant pose close-up, slight screen shake from enthusiastic movement, bouncy energetic animation
+Camera starts on tense confrontation medium shot, dark energy rises from floor like smoke, slow rotation around Mr. Star as his aura grows, light shifts to cold purple, he says "I just wanted to turn the whole world into food", energy surges then abruptly collapses — he shrinks back down trembling, camera holds on his conflicted face: the darkness is still inside him, waiting, 15-second tense emotional scene
 ```
 **视频运作中文提示词:**
 ```
-镜头从Enos乱作一团的标本桌广角开始，随着他越写越兴奋缓缓推进，他突然弹起身来将标本瓶举到灯笼光下，瓶子爆发星光效果，镜头稳定在胜利姿势特写，因热烈动作屏幕微微震动，活泼充满能量的动画
+镜头从紧张对峙中景开始，幽暗能量从地板如烟升起，缓缓环绕Mr.Star旋转，光线转为冷紫，他说出"我只是想把整个世界变成食物"，能量涌动后骤然收回——他缩回原形颤抖，镜头停在他矛盾的脸上：黑暗力量仍在他体内等待，15秒紧张情感场景
 ```
 
 **Frame files:** `storyboard/frames/prologue/P04_start.png` · `P04_end.png`
 
 ---
 
-### Clip P-05 — Oreo Introduction / Oreo 介绍
+### Clip P-05 — The Dragon Awaits / 恶龙在等待
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 5
 
 **Motion Prompt:**
 ```
-Camera moves through shadows following Oreo's stealthy movement, smooth fluid glide, she stops and kneels at the glowing herb, careful hands pluck it into a vial, memory image of grandfather appears as soft translucent overlay and gently fades, Oreo closes her fingers around the vial, emotional close-up hold, graceful ninja-style motion
+Camera tracks the team walking toward the sealed doors, tension builds with each step, torchlight dims, the ground trembles slightly, then the doors EXPLODE outward — camera shakes violently, dragon shadow erupts through, team scatters into battle stances, hold on Mr. Star's face: the gleam in his eyes, the glowing birthmark — he has been waiting for this, cut to black, title card: "STAGE 1 — THE DRAGON", 15-second climactic transition into game
 ```
 **视频运作中文提示词:**
 ```
-镜头穿过阴影跟随Oreo的潜行移动，流畅滑动镜头，她停下蹲跪在发光草药前，小心翼翼地将草药摘入瓶中，爷爷记忆幻象作为柔和半透明叠加层出现后缓缓消散，Oreo攥紧药瓶，情感特写定格，优雅忍者风格运动
+镜头跟随队伍走向封印大门，每一步紧张积累，火炬变暗，地面轻微颤抖，然后大门爆炸性外炸——镜头剧烈震动，恶龙阴影冲出，队伍散开进入战斗姿态，停留在Mr.Star的脸上：眼中的光芒，发光的胎记——他一直在等待这一刻，切入黑幕，标题卡："第一关 — 恶龙"，15秒走向游戏的高潮过渡
 ```
 
 **Frame files:** `storyboard/frames/prologue/P05_start.png` · `P05_end.png`
 
 ---
 
-### Clip P-06 — Mr. Star's Secret / Mr.Star 的秘密
+### Clip P-06 — Dragon Falls, Darkness Rises / 恶龙倒下，黑暗升起
+*(Cutscene between Stage 1 clear and Stage 2 start)*
 
 **Full prompt:** `storyboard/text/prologue.md` → Scene 6
 
 **Motion Prompt:**
 ```
-Camera slowly zooms in from medium shot of Mr. Star in backpack to extreme close-up on the star birthmark, dark energy particle effects gently drift and swirl toward him in slow motion, his breathing is shallow and deliberate rather than natural sleep, the star mark pulses once with glow, slow deliberate zoom over 10 seconds, atmospheric and ominous despite cute appearance
+Opens on post-battle stillness with team scattered and dragon fallen, dark energy rises slowly from dragon's body, camera focuses on Mr. Star as the dark energy begins flowing toward him — he tilts his head back, arms spread wide, absorbing it all, slow build then sudden dramatic acceleration as his eyes transform, body expands, teammates back away — camera pulls back to reveal his growing form against the swirling darkness, cut to: "STAGE 2 — MR. STAR", 15-second transformation cutscene
 ```
 **视频运作中文提示词:**
 ```
-镜头从Mr.Star在背包内的中景缓缓推至星形胎记的极端特写，幽暗能量粒子效果以慢动作轻柔飘荡旋绕向他，他的呼吸是刻意浅显而非自然睡眠，星形胎记随发光脉冲一次，10秒缓慢刻意推进，可爱外表下暗藏诡异气氛
+以战后寂静开场，队伍散落，恶龙倒下，黑暗能量从恶龙身体缓缓升起，镜头聚焦Mr.Star，黑暗能量开始向他流动——他仰起头，张开双臂，将其全部吸收，缓慢积累后骤然戏剧性加速，双眼变形，身体膨胀，队友后退——镜头拉远揭示他在旋绕黑暗中增大的形态，切入："第二关 — Mr.Star"，15秒变身过场动画
 ```
 
 **Frame files:** `storyboard/frames/prologue/P06_start.png` · `P06_end.png`
-
----
-
-### Clip P-07 — Aftermath of Battle / 战斗后休整
-
-**Full prompt:** `storyboard/text/prologue.md` → Scene 7
-
-**Motion Prompt:**
-```
-Slow pan from left to right across the sleeping team, camera lingers on each character's tired face, then slowly tilts down to the food bags in foreground, reverse zoom slightly to show the full scene, hold on Mr. Star's gleaming open eyes and extended paw aimed at food, ominous musical beat implied, slow 10-second shot building tension
-```
-**视频运作中文提示词:**
-```
-从左至右缓慢平移过熟睡的队伍，镜头在每个角色疲惫的脸上停留，然后缓缓俯拍向前景的食物袋，略微拉远展示全景，定格在Mr.Star睁着的闪亮眼睛和伸向食物的爪子上，暗示不祥节拍，缓慢10秒制造紧张感
-```
-
-**Frame files:** `storyboard/frames/prologue/P07_start.png` · `P07_end.png`
-
----
-
-### Clip P-08 — Betrayal! Food Gone / 背叛！食物全没了！
-
-**Full prompt:** `storyboard/text/prologue.md` → Scene 8
-
-**Motion Prompt:**
-```
-Quick pan from waking characters to empty food bags, dramatic zoom-in on the empty bags, then snap cut to Mr. Star's bloated round silhouette sitting in the middle, camera pushes in fast to close-up on his guilty crumb-covered face, reaction shot with team's jaws dropping, quick visual gag timing, expressive anime face effects — vein pop, sweat drop, shock lines
-```
-**视频运作中文提示词:**
-```
-快速从苏醒角色平移至空瘪食物袋，戏剧性快速推进空袋特写，然后急切切入Mr.Star圆肚子黑色剪影坐在中央，镜头快速推进至他愧疚沾满碎渣的脸部特写，队伍下巴惊掉的反应镜头，快节奏视觉喜剧节拍，夸张动漫面部效果——爆青筋、冷汗珠、惊骇线条
-```
-
-**Frame files:** `storyboard/frames/prologue/P08_start.png` · `P08_end.png`
-
----
-
-### Clip P-09 — Dark Power Rises / 黑暗力量觉醒
-
-**Full prompt:** `storyboard/text/prologue.md` → Scene 9
-
-**Motion Prompt:**
-```
-Camera starts on tense confrontation medium shot, dark energy begins to rise from floor like smoke, camera slowly rotates around Mr. Star as his aura grows, light in room shifts from warm to cold purple, Mr. Star's voice drops an octave saying "I just wanted to turn the whole world into food", transformation energy builds, camera shakes slightly, ends on dramatic wide shot with glowing Mr. Star centered
-```
-**视频运作中文提示词:**
-```
-镜头从紧张对峙的中景开始，幽暗能量从地板如烟般升起，镜头随着Mr.Star光晕增强缓缓环绕他旋转，房间光线从温暖转为冷紫，Mr.Star声音变低说出"我只是想把整个世界变成食物"，变身能量积聚，镜头轻微抖动，以戏剧性广角收尾——发光Mr.Star居中
-```
-
-**Frame files:** `storyboard/frames/prologue/P09_start.png` · `P09_end.png`
 
 ---
 
@@ -316,7 +266,8 @@ Opens on wide shot of tiny Mr. Star alone on cake mountain peak, slow zoom in to
 
 | Clip | Scene | Video Segment |
 |------|-------|---------------|
-| P-01 ~ P-09 | 9 scenes | Prologue (~90s) |
+| P-01 ~ P-05 | Prologue scenes 1–5 | Prologue video (~75s) |
+| P-06 | Dragon falls, Mr. Star transforms | Cutscene between Stage 1 and Stage 2 (~15s) |
 | A-01 ~ A-04 | 4 scenes | Ending A — Victory (~60s) |
 | B-01 ~ B-04 | 4 scenes | Ending B — Defeat (~60s) |
-| **Total** | **17 clips** | **~210s (~3.5 min)** |
+| **Total** | **14 clips** | **~210s (~3.5 min)** |
