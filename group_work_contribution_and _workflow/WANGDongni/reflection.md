@@ -7,7 +7,7 @@
 
 ## How Did AI Tools Affect Your Production Pipeline?
 
-**Tools used:** Claude Code (game development), Kling AI (character video segment)
+**Tools used:** Claude Code (game development), 即梦AI + Lovart (character video segment)
 
 **Before AI tools, this task would have required:**
 - （填写，例：大量手动编写 Canvas 游戏逻辑）

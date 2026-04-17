@@ -23,6 +23,6 @@ See `storyboard/` for the written storyboard and `storyboard/frames/` for first/
 
 ## Production Notes
 
-- Tool used: **Kling AI** (可灵)
+- Tool used: **即梦AI + Lovart** (可灵)
 - See each character's workflow folder (`workflow/*/prompts.md`) for the prompts used
 - All clips were edited together in （填写剪辑工具，如 CapCut, Premiere, DaVinci Resolve）

@@ -7,7 +7,7 @@
 
 ## How Did AI Tools Affect Your Production Pipeline?
 
-（回答：与传统视频制作相比，使用 Kling AI 等 AI 工具如何改变了你的工作流程？）
+（回答：与传统视频制作相比，使用 即梦AI + Lovart 等 AI 工具如何改变了你的工作流程？）
 
 **Before AI tools, this task would have required:**
 - （填写）

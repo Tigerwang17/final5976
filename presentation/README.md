@@ -8,7 +8,7 @@ This folder contains assets and notes for the final presentation (PPT / slides).
 
 ### Slide 1 — Title
 - Project name: *Our Rations are All Stolen, So Why on Earth are We Still Adventuring in This Dungeon?*
-- Course: SDSC5976 · Group Members: （填写组员名字）
+- Course: SD5976 · Group Members: （填写组员名字）
 
 ### Slide 2 — Project Overview
 - What we built: interactive narrative experience = AI short films + browser game
@@ -19,7 +19,7 @@ This folder contains assets and notes for the final presentation (PPT / slides).
 - Source: polyu-storyworld character database
 
 ### Slide 4 — Technology Used
-- AI video generation: Kling AI
+- AI video generation: 即梦AI + Lovart
 - Game development: HTML5 Canvas, vanilla JavaScript (zero dependencies)
 - Integration: Claude Code (AI-assisted development)
 - Repository: GitHub
@@ -33,7 +33,7 @@ This folder contains assets and notes for the final presentation (PPT / slides).
 ### Slide 6 — Storyboard & Video Production
 - Show storyboard text structure
 - Show first/last frame examples
-- Explain AI prompt workflow (Kling AI)
+- Explain AI prompt workflow (即梦AI + Lovart)
 
 ### Slide 7 — Game Demo
 - Screenshots / GIF of gameplay

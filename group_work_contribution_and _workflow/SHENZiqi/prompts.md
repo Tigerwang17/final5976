@@ -1,16 +1,16 @@
-# Cheri — Video Generation Prompts
+# Enos — Video Generation Prompts
 
-Record all prompts used to generate AI video clips for Cheri's segment and Ending A.
+Record all prompts used to generate AI video clips for Enos's segment and Ending B.
 
 ---
 
-## Cheri Character Segment (Prologue)
+## Enos Character Segment (Prologue)
 
 ### Clip 01 — （场景名称）
 
 **Scene description:** （填写）
 
-**Kling AI Prompt:**
+**即梦AI + Lovart Prompt:**
 ```
 （填写完整 prompt）
 ```
@@ -19,13 +19,13 @@ Record all prompts used to generate AI video clips for Cheri's segment and Endin
 
 ---
 
-## Ending A — Victory
+## Ending B — Defeat
 
-### Clip 01 — Boss Defeated
+### Clip 01 — Heroes Fall
 
 **Scene description:** （填写）
 
-**Kling AI Prompt:**
+**即梦AI + Lovart Prompt:**
 ```
 （填写）
 ```
@@ -38,7 +38,7 @@ Record all prompts used to generate AI video clips for Cheri's segment and Endin
 
 **Scene description:** （填写）
 
-**Kling AI Prompt:**
+**即梦AI + Lovart Prompt:**
 ```
 （填写）
 ```

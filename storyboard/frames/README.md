@@ -28,7 +28,7 @@ Increment the clip number for each new clip: `clip_02_start.png`, `clip_02_end.p
 
 ## How to Export Frames
 
-**From Kling AI:**
+**From 即梦AI + Lovart:**
 - Download the generated clip as MP4
 - Use any video player (e.g. QuickTime, VLC) to jump to first and last frame, then take a screenshot
 - Or use ffmpeg: `ffmpeg -i clip.mp4 -vframes 1 clip_01_start.png` and `ffmpeg -sseof -0.1 -i clip.mp4 -vframes 1 clip_01_end.png`

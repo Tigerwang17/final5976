@@ -54,7 +54,7 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 （描述如何将故事转化为 AI 视频 prompt）
 
 ### Step 3 — Generation & Selection
-（描述用 Kling AI 生成，选取最佳片段的过程）
+（描述用 即梦AI + Lovart 生成，选取最佳片段的过程）
 
 ### Step 4 — Editing & Export
 （描述如何剪辑成最终片段）

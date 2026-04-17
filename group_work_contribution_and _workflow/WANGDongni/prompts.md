@@ -10,7 +10,7 @@ Record all prompts used to generate AI video clips for Oreo's segment.
 
 **Scene description:** （填写）
 
-**Kling AI Prompt:**
+**即梦AI + Lovart Prompt:**
 ```
 （填写完整 prompt）
 ```
@@ -23,7 +23,7 @@ Record all prompts used to generate AI video clips for Oreo's segment.
 
 **Scene description:** （填写）
 
-**Kling AI Prompt:**
+**即梦AI + Lovart Prompt:**
 ```
 （填写）
 ```
