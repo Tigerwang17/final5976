@@ -136,17 +136,17 @@
     <div class="frame">
       <div class="hud">
         <div class="left">
-          <div class="pill">反派生命</div>
+          <div class="pill">Boss HP</div>
           <div class="hpbar" title="Boss HP"><i id="bossHpFill"></i></div>
           <div class="pill">HP: <b id="bossHpText">50</b>/<b id="bossHpMax">50</b></div>
         </div>
         <div class="right">
-          <div class="pill">玩家1 <span id="p1Name">?</span></div>
+          <div class="pill">Player 1 <span id="p1Name">?</span></div>
           <div class="lives" id="p1Lives"></div>
-          <div class="pill">玩家2 <span id="p2Name">?</span></div>
+          <div class="pill">Player 2 <span id="p2Name">?</span></div>
           <div class="lives" id="p2Lives"></div>
-          <div class="pill">P1：<span class="kbd">A</span>/<span class="kbd">D</span> 移动 · <span class="kbd">Space</span> 发射</div>
-          <div class="pill">P2：<span class="kbd">9</span>/<span class="kbd">0</span>（或 <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>）移动 · <span class="kbd">=</span> 发射</div>
+          <div class="pill">P1: <span class="kbd">A</span>/<span class="kbd">D</span> Move · <span class="kbd">Space</span> Shoot</div>
+          <div class="pill">P2: <span class="kbd">9</span>/<span class="kbd">0</span> (or <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>) Move · <span class="kbd">=</span> Shoot</div>
         </div>
       </div>
       <canvas id="cv" width="960" height="560"></canvas>
@@ -180,16 +180,16 @@
       function drawText(x,y,text,color,scale=2){ ctx.save(); ctx.imageSmoothingEnabled=false; ctx.translate(x,y); ctx.scale(scale,scale); ctx.font='8px monospace'; ctx.fillStyle=color; ctx.fillText(text,0,0); ctx.restore(); }
 
       const CHARACTERS = [
-        { id:'cowcat', name:'忍者Oreo', c1:'#ffffff', c2:'#111827', acc:COLORS.neon1 },
-        { id:'wizard', name:'贤者Cheri', c1:'#6b3f2a', c2:'#3b2466', acc:COLORS.neon2 },
-        { id:'knight', name:'巫师Enos', c1:'#8aa0b3', c2:'#263244', acc:'#a3ffea' },
-        { id:'cinn', name:'宠物Mr.Star', c1:'#f7f2ff', c2:'#9fd7ff', acc:'#ffb3c7' },
+        { id:'cowcat', name:'Ninja Oreo', c1:'#ffffff', c2:'#111827', acc:COLORS.neon1 },
+        { id:'wizard', name:'Sage Cheri', c1:'#6b3f2a', c2:'#3b2466', acc:COLORS.neon2 },
+        { id:'knight', name:'Wizard Enos', c1:'#8aa0b3', c2:'#263244', acc:'#a3ffea' },
+        { id:'cinn', name:'Pet Mr.Star', c1:'#f7f2ff', c2:'#9fd7ff', acc:'#ffb3c7' },
       ];
       const CHARACTER_IMAGE_PATHS = {
-        cowcat: 'character/cat.PNG',
-        cinn: 'character/dog.PNG',
-        knight: 'character/knight.PNG',
-        wizard: 'character/wizard.PNG',
+        cowcat: 'character_pixel/cat.PNG',
+        cinn: 'character_pixel/dog.PNG',
+        knight: 'character_pixel/knight.PNG',
+        wizard: 'character_pixel/wizard.PNG',
       };
       const characterImages = new Map();
       const STAGE_IMAGES = {
@@ -200,9 +200,9 @@
       };
       const stageImages = new Map();
       const bossStage2Image = new Image();
-      bossStage2Image.src = 'character/boss2.PNG';
+      bossStage2Image.src = 'character_pixel/boss2.PNG';
       const bossStage2BombImage = new Image();
-      bossStage2BombImage.src = 'character/boss2_bomb.PNG';
+      bossStage2BombImage.src = 'character_pixel/boss2_bomb.PNG';
       const gameplayBackgroundImage = new Image();
       gameplayBackgroundImage.src = 'stages/background.png';
       function getStage2BossSize(){
@@ -289,22 +289,22 @@
       function showOverlaySelect(){
         overlay.classList.remove('hidden'); game.state='select';
         overlay.onclick = null;
-        panel.innerHTML = `<div class="title">像素双人打飞机</div>
-          <div class="sub">先为 <b>玩家1</b> 与 <b>玩家2</b> 各选择一个角色（共 4 个），然后开始游戏。</div>
+        panel.innerHTML = `<div class="title">Pixel Co-op Shooter</div>
+          <div class="sub">Choose one character for <b>Player 1</b> and <b>Player 2</b> (4 total), then start the game.</div>
           <div class="grid" id="charGrid"></div>
           <div class="row"><div class="pick">
-            <div class="pill">玩家1：<b id="pickP1">未选择</b></div>
-            <div class="pill">玩家2：<b id="pickP2">未选择</b></div>
-            <div class="pill">规则：反派 HP=0 则 <b style="color: var(--ok)">GAME WIN</b>；两名玩家 HP 都=0 则 <b style="color: var(--danger)">GAME OVER</b></div>
+            <div class="pill">Player 1: <b id="pickP1">Not selected</b></div>
+            <div class="pill">Player 2: <b id="pickP2">Not selected</b></div>
+            <div class="pill">Rule: Boss HP = 0 means <b style="color: var(--ok)">GAME WIN</b>; both players HP = 0 means <b style="color: var(--danger)">GAME OVER</b></div>
           </div><div class="pick">
-            <button class="btn secondary" id="resetPick">重选</button>
-            <button class="btn" id="startBtn" disabled>开始游戏</button>
+            <button class="btn secondary" id="resetPick">Reset</button>
+            <button class="btn" id="startBtn" disabled>Start Game</button>
           </div></div>
-          <div class="help">- <b>反派</b>：顶部左右移动，随机丢炸弹（命中玩家 -1）。<br/>- <b>玩家1</b>：<span class="kbd">A</span>/<span class="kbd">D</span> 移动，<span class="kbd">Space</span> 发射。<br/>- <b>玩家2</b>：<span class="kbd">9</span>/<span class="kbd">0</span> 移动（或 <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>），<span class="kbd">=</span> 发射。</div>`;
+          <div class="help">- <b>Boss</b>: Moves left and right at the top and drops bombs randomly (hit = -1 HP).<br/>- <b>Player 1</b>: <span class="kbd">A</span>/<span class="kbd">D</span> to move, <span class="kbd">Space</span> to shoot.<br/>- <b>Player 2</b>: <span class="kbd">9</span>/<span class="kbd">0</span> to move (or <span class="kbd">Numpad9</span>/<span class="kbd">Numpad0</span>), <span class="kbd">=</span> to shoot.</div>`;
         const grid=panel.querySelector('#charGrid'), pickP1=panel.querySelector('#pickP1'), pickP2=panel.querySelector('#pickP2'), startBtn=panel.querySelector('#startBtn');
         function rerenderPick(){
-          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? '未选择';
-          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? '未选择';
+          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? 'Not selected';
+          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? 'Not selected';
           startBtn.disabled = !(game.selected.p1 && game.selected.p2 && game.selected.p1 !== game.selected.p2);
           grid.querySelectorAll('.card').forEach(card => {
             card.classList.remove('selectedP1','selectedP2');
@@ -338,20 +338,20 @@
         overlay.onclick = null;
         game.selected.p1 = null;
         game.selected.p2 = null;
-        panel.innerHTML = `<div class="title">第二局角色选择</div>
-          <div class="sub">请选择第二局角色。<b style="color:var(--danger)">宠物 Mr.Star已黑化，无法使用。</b></div>
+        panel.innerHTML = `<div class="title">Stage 2 Character Select</div>
+          <div class="sub">Choose characters for stage 2. <b style="color:var(--danger)">Pet Mr.Star has turned evil and is unavailable.</b></div>
           <div class="grid" id="charGrid"></div>
           <div class="row"><div class="pick">
-            <div class="pill">玩家1：<b id="pickP1">未选择</b></div>
-            <div class="pill">玩家2：<b id="pickP2">未选择</b></div>
+            <div class="pill">Player 1: <b id="pickP1">Not selected</b></div>
+            <div class="pill">Player 2: <b id="pickP2">Not selected</b></div>
           </div><div class="pick">
-            <button class="btn secondary" id="resetPick">重选</button>
-            <button class="btn" id="startBtn" disabled>开始第二局</button>
+            <button class="btn secondary" id="resetPick">Reset</button>
+            <button class="btn" id="startBtn" disabled>Start Stage 2</button>
           </div></div>`;
         const grid=panel.querySelector('#charGrid'), pickP1=panel.querySelector('#pickP1'), pickP2=panel.querySelector('#pickP2'), startBtn=panel.querySelector('#startBtn');
         function rerenderPick(){
-          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? '未选择';
-          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? '未选择';
+          pickP1.textContent = CHARACTERS.find(c=>c.id===game.selected.p1)?.name ?? 'Not selected';
+          pickP2.textContent = CHARACTERS.find(c=>c.id===game.selected.p2)?.name ?? 'Not selected';
           startBtn.disabled = !(game.selected.p1 && game.selected.p2 && game.selected.p1 !== game.selected.p2);
           grid.querySelectorAll('.card').forEach(card => {
             card.classList.remove('selectedP1','selectedP2');
@@ -363,7 +363,7 @@
         for(const ch of CHARACTERS){
           const isLocked = ch.id === 'cinn';
           const card=document.createElement('div'); card.className='card'; if(isLocked) card.classList.add('locked'); card.dataset.id=ch.id;
-          const src=isLocked ? 'character/boss2.PNG' : CHARACTER_IMAGE_PATHS[ch.id];
+          const src=isLocked ? 'character_pixel/boss2.PNG' : CHARACTER_IMAGE_PATHS[ch.id];
           const av=avatarCanvases.get(ch.id);
           card.innerHTML = `<div class="thumb-wrap">${src?`<img alt="${ch.name}" src="${src}" class="thumb ${isLocked?'thumb-zoom-2x':''}" />`:(av?`<img alt="" src="${av.toDataURL()}" class="thumb" />`:'')}${isLocked?'<span class="badge-evil">BETRAYED</span>':''}</div>
             <div class="name">${ch.name}</div>`;
@@ -392,9 +392,9 @@
             <img alt="" src="${imagePath}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
           </div>
           <div class="row" style="margin-top:16px"><div class="pick">
-            <div class="pill">玩家1：<b>${game.players[0]?.name??'-'}</b>（HP ${game.players[0]?.lives??0}/3）</div>
-            <div class="pill">玩家2：<b>${game.players[1]?.name??'-'}</b>（HP ${game.players[1]?.lives??0}/3）</div>
-            <div class="pill">第 ${game.stage} 局 · 反派 HP <b>${game.boss?.hp??0}</b>/${game.boss?.maxHp??'-'}</div>
+            <div class="pill">Player 1: <b>${game.players[0]?.name??'-'}</b> (HP ${game.players[0]?.lives??0}/3)</div>
+            <div class="pill">Player 2: <b>${game.players[1]?.name??'-'}</b> (HP ${game.players[1]?.lives??0}/3)</div>
+            <div class="pill">Stage ${game.stage} · Boss HP <b>${game.boss?.hp??0}</b>/${game.boss?.maxHp??'-'}</div>
           </div><div class="pick">
             ${secondaryLabel?`<button class="btn secondary" id="secondaryBtn">${secondaryLabel}</button>`:''}
             <button class="btn" id="primaryBtn">${primaryLabel}</button>
@@ -406,11 +406,11 @@
       function showFirstStageWin(){
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.stage1Win,
-          title: '第一局通关',
-          sub: '点击任意处、按空格或回车进入第二局',
-          primaryLabel: '进入第二局',
+          title: 'Stage 1 Cleared',
+          sub: 'Click anywhere, or press Space / Enter to continue to stage 2',
+          primaryLabel: 'Go to Stage 2',
           onPrimary: ()=>{ showOverlayStage2Select(); },
-          secondaryLabel: '回到角色选择',
+          secondaryLabel: 'Back to Character Select',
           onSecondary: ()=>showOverlaySelect(),
         });
         const continueToStage2 = ()=>{ if(game.state!=='result') return; showOverlayStage2Select(); };
@@ -419,11 +419,11 @@
       function showFirstStageLose(){
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.lose,
-          title: '第一局失败',
-          sub: '是否重新玩第二局？',
-          primaryLabel: '重新玩第二局',
+          title: 'Stage 1 Failed',
+          sub: 'Retry stage 2?',
+          primaryLabel: 'Retry Stage 2',
           onPrimary: ()=>{ showOverlayStage2Select(); },
-          secondaryLabel: '重开第一局',
+          secondaryLabel: 'Restart Stage 1',
           onSecondary: ()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(1); },
         });
         overlay.onclick = null;
@@ -432,8 +432,8 @@
         overlay.classList.remove('hidden');
         game.state='result';
         overlay.onclick = null;
-        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">第二局通关</div>
-          <div class="sub">你们成功击败了黑化 Mr.Star。</div>
+        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Stage 2 Cleared</div>
+          <div class="sub">You defeated the corrupted Mr.Star.</div>
           <div class="row" style="margin-top:14px; justify-content:center">
             <img alt="" src="${STAGE_IMAGES.stage2Win}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
           </div>
@@ -447,23 +447,23 @@
         game.state='result';
         overlay.onclick = null;
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">HAPPY ENDING</div>
-          <div class="sub">通关对话</div>
+          <div class="sub">Post-clear dialogue</div>
           <div class="row" style="margin-top:14px; justify-content:center">
             <img alt="" src="${STAGE_IMAGES.happyEnding}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
           </div>
           <div class="row" style="margin-top:16px; justify-content:center">
-            <button class="btn secondary" id="backSelectBtn">回到角色选择</button>
+            <button class="btn secondary" id="backSelectBtn">Back to Character Select</button>
           </div>`;
         panel.querySelector('#backSelectBtn').addEventListener('click', ()=>showOverlaySelect());
       }
       function showSecondStageLose(){
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.lose,
-          title: '第二局失败',
-          sub: '是否重新玩第二局？',
-          primaryLabel: '重新玩第二局',
+          title: 'Stage 2 Failed',
+          sub: 'Retry stage 2?',
+          primaryLabel: 'Retry Stage 2',
           onPrimary: ()=>{ overlay.classList.add('hidden'); game.state='playing'; resetPlay(2); },
-          secondaryLabel: '回到角色选择',
+          secondaryLabel: 'Back to Character Select',
           onSecondary: ()=>showOverlaySelect(),
         });
         overlay.onclick = null;
