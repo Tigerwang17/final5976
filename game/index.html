@@ -218,6 +218,58 @@
       bossStage2BombImage.src = 'character_pixel/boss2_bomb.PNG';
       const gameplayBackgroundImage = new Image();
       gameplayBackgroundImage.src = 'stages/background.png';
+      const stageBgm = {
+        1: new Audio('music/Battle1_Shatter the Core.mp3'),
+        2: new Audio('music/Battle2_Void Hunger.mp3'),
+      };
+      const resultSfx = {
+        win: new Audio('music/victory.mp3'),
+        lose: new Audio('music/fail.mp3'),
+      };
+      let activeBgmStage = null;
+      for(const key of Object.keys(stageBgm)){
+        const bgm = stageBgm[key];
+        bgm.loop = true;
+        bgm.preload = 'auto';
+        bgm.volume = 0.45;
+      }
+      for(const key of Object.keys(resultSfx)){
+        const sfx = resultSfx[key];
+        sfx.loop = false;
+        sfx.preload = 'auto';
+        sfx.volume = 0.65;
+      }
+      function stopAllBgm(){
+        for(const key of Object.keys(stageBgm)){
+          const bgm = stageBgm[key];
+          bgm.pause();
+          bgm.currentTime = 0;
+        }
+        activeBgmStage = null;
+      }
+      function playResultSfx(kind){
+        const sfx = resultSfx[kind];
+        if(!sfx) return;
+        for(const key of Object.keys(resultSfx)){
+          const audio = resultSfx[key];
+          audio.pause();
+          audio.currentTime = 0;
+        }
+        const playPromise = sfx.play();
+        if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+      }
+      function syncBgm(){
+        if(game.state!=='playing' || !stageBgm[game.stage]){
+          if(activeBgmStage!==null) stopAllBgm();
+          return;
+        }
+        if(activeBgmStage===game.stage) return;
+        stopAllBgm();
+        const bgm = stageBgm[game.stage];
+        const playPromise = bgm.play();
+        if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+        activeBgmStage = game.stage;
+      }
       function getStage1BossSize(){
         const targetW = 280;
         const targetH = 200;
@@ -312,6 +364,7 @@
         game.boss={x:W/2-bossSize.w/2,y:stageNo===2?42:6,w:bossSize.w,h:bossSize.h,vx:cfg.speed,hp:cfg.hp,maxHp:cfg.hp,dropMin:cfg.dropMin,dropMax:cfg.dropMax};
         game.players=[makePlayer(1,game.selected.p1,W*.35), makePlayer(2,game.selected.p2,W*.65)];
         game.bullets=[]; game.bombs=[]; game.fx=[]; game.t=0; game.cooldowns.p1=0; game.cooldowns.p2=0; game.cooldowns.bossBomb=rand(game.boss.dropMin,game.boss.dropMax); updateHUD();
+        syncBgm();
       }
       function renderLives(el,l){ el.innerHTML=''; for(let i=0;i<3;i++){ const d=document.createElement('div'); d.className='heart'+(i<l?'':' empty'); el.appendChild(d);} }
       function updateHUD(){
@@ -323,6 +376,7 @@
       }
       function showOverlaySelect(){
         overlay.classList.remove('hidden'); game.state='select';
+        syncBgm();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title">Our Rations are All Stolen<br/>So Why on Earth are We Still Adventuring in This Dungeon?</div>
           <div class="sub">Choose one character for <b>Player 1</b> and <b>Player 2</b> (4 total), then start the game.</div>
@@ -370,6 +424,7 @@
       }
       function showOverlayStage2Select(){
         overlay.classList.remove('hidden'); game.state='select';
+        syncBgm();
         overlay.onclick = null;
         game.selected.p1 = null;
         game.selected.p2 = null;
@@ -421,6 +476,7 @@
       function renderStageResultScreen({ imagePath, title, sub, primaryLabel, onPrimary, secondaryLabel, onSecondary }){
         overlay.classList.remove('hidden');
         game.state='result';
+        syncBgm();
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">${title}</div>
           <div class="sub">${sub}</div>
           <div class="row" style="margin-top:14px; justify-content:center">
@@ -439,6 +495,7 @@
         if(secondaryBtn && onSecondary) secondaryBtn.addEventListener('click', onSecondary);
       }
       function showFirstStageWin(){
+        playResultSfx('win');
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.stage1Win,
           title: 'Stage 1 Cleared',
@@ -454,6 +511,7 @@
       function showStage2IntroScreen(){
         overlay.classList.remove('hidden');
         game.state='result';
+        syncBgm();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Mr. Star Gone Dark</div>
           <div class="sub">A shadow rises before Stage 2.</div>
@@ -466,6 +524,7 @@
         panel.querySelector('#stage2NextBtn').addEventListener('click', ()=>showOverlayStage2Select());
       }
       function showFirstStageLose(){
+        playResultSfx('lose');
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.stage1Lose,
           title: 'Stage 1 Failed',
@@ -476,8 +535,10 @@
         overlay.onclick = null;
       }
       function showSecondStageWin(){
+        playResultSfx('win');
         overlay.classList.remove('hidden');
         game.state='result';
+        syncBgm();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Stage 2 Cleared</div>
           <div class="sub">You defeated the corrupted Mr.Star.</div>
@@ -506,6 +567,7 @@
         window.location.href = '../final.html?section=ending&ending=b';
       }
       function showSecondStageLose(){
+        playResultSfx('lose');
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.stage2Lose,
           title: 'Stage 2 Failed',

@@ -1,8 +1,8 @@
 # Oreo — Workflow
 
-**Responsible member:** （填写组员名字）
+**Responsible member:** Wang Dongni
 **Character:** Oreo (Cat-folk Ninja Assassin)
-**Tasks:** Game code · Video integration in final.html · Win/lose logic · Workflow documentation
+**Tasks:** Game code · Music Generation · Video integration in final.html · Win/lose logic · Workflow documentation
 
 ---
 
@@ -10,6 +10,7 @@
 
 - [x] Game code: `game/index.html` (two-player co-op boss battle)
 - [x] Root integration page: `final.html` (prologue → game → endings)
+- [x] Music Generation:
 - [ ] Oreo character segment (part of `videos/prologue.mp4`)
 - [ ] Prompts documented: `group_work_contribution_and _workflow/WANGDongni/prompts.md`
 - [ ] Reflection written: `group_work_contribution_and _workflow/WANGDongni/reflection.md`
@@ -45,16 +46,19 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 
 ---
 
-## Video Production Process (Oreo segment)
+## Game Production Process (Oreo segment)
 
-### Step 1 — Script & Storyboard
-（描述你如何规划 Oreo 的场景故事）
+### Step 1 — Game Design 
+
 
 ### Step 2 — Prompt Writing
-（描述如何将故事转化为 AI 视频 prompt）
 
-### Step 3 — Generation & Selection
-（描述用 即梦AI + Lovart 生成，选取最佳片段的过程）
 
-### Step 4 — Editing & Export
-（描述如何剪辑成最终片段）
+### Step 3 — Vibe Coding
+
+
+### Step 3 — Music Generation
+
+
+### Step 4 — Images Generation
+
