@@ -231,7 +231,7 @@
       <p class="ending-label" style="color: #ff4d6d;">Ending B — Defeat</p>
       <p class="ending-desc">Mr. Star wins. Darkness spreads beyond the dungeon.</p>
       <div class="video-container">
-        <video id="ending-b-video" controls poster="game/stages/game_lose.jpeg">
+        <video id="ending-b-video" controls poster="game/stages/gameover_2.png">
           <source src="videos/ending_b.mp4" type="video/mp4" />
         </video>
       </div>
@@ -294,6 +294,15 @@
       document.getElementById('tab-a').classList.toggle('active', which === 'a');
       document.getElementById('tab-b').classList.toggle('active', which === 'b');
     }
+    function playEndingAVictory(autoplay = true) {
+      goTo('ending');
+      showEnding('a');
+      if(!autoplay) return;
+      const endingAVideo = document.getElementById('ending-a-video');
+      if(!endingAVideo) return;
+      const playPromise = endingAVideo.play();
+      if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    }
 
     // Check if intro video exists; show placeholder if not
     const introVideo = document.getElementById('intro-video');
@@ -307,6 +316,20 @@
     introVideo.addEventListener('ended', () => {
       setTimeout(() => goTo('game'), 800);
     });
+    window.addEventListener('message', (event) => {
+      if(event?.data?.type === 'PLAY_ENDING_A_FROM_GAME') playEndingAVictory(true);
+      if(event?.data?.type === 'SHOW_ENDING_B_FROM_GAME'){
+        goTo('ending');
+        showEnding('b');
+      }
+    });
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionParam = urlParams.get('section');
+    const endingParam = urlParams.get('ending');
+    const autoplayParam = urlParams.get('autoplay');
+    if(sectionParam && SECTIONS.includes(sectionParam)) goTo(sectionParam);
+    if(endingParam === 'a' || endingParam === 'b') showEnding(endingParam);
+    if(autoplayParam === '1' && endingParam === 'a') playEndingAVictory(true);
   </script>
 </body>
 </html>

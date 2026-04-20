@@ -82,7 +82,8 @@ final_project_SD5976/
 │   │   ├── background.png
 │   │   ├── game1_win01.jpeg
 │   │   ├── game2_win01.jpeg
-│   │   ├── game_lose.jpeg
+│   │   ├── gameover_1.png
+│   │   ├── gameover_2.png
 │   │   └── happyending.jpeg
 │   └── README.md
 │
