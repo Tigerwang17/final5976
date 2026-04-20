@@ -204,6 +204,7 @@
         stage2Win: 'stages/gamewin_2.jpg',
         stage1Lose: 'stages/gameover_1.png',
         stage2Lose: 'stages/gameover_2.png',
+        stage2Intro: 'stages/star_black.jpeg',
         happyEnding: 'stages/happyending.jpeg',
       };
       const stageImages = new Map();
@@ -441,14 +442,28 @@
         renderStageResultScreen({
           imagePath: STAGE_IMAGES.stage1Win,
           title: 'Stage 1 Cleared',
-          sub: 'Click anywhere, or press Space / Enter to continue to stage 2',
+          sub: 'Click anywhere, or press Space / Enter to continue',
           primaryLabel: 'Go to Stage 2',
-          onPrimary: ()=>{ showOverlayStage2Select(); },
+          onPrimary: ()=>{ showStage2IntroScreen(); },
           secondaryLabel: 'Back to Character Select',
           onSecondary: ()=>showOverlaySelect(),
         });
-        const continueToStage2 = ()=>{ if(game.state!=='result') return; showOverlayStage2Select(); };
+        const continueToStage2 = ()=>{ if(game.state!=='result') return; showStage2IntroScreen(); };
         overlay.onclick = continueToStage2;
+      }
+      function showStage2IntroScreen(){
+        overlay.classList.remove('hidden');
+        game.state='result';
+        overlay.onclick = null;
+        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Mr. Star Gone Dark</div>
+          <div class="sub">A shadow rises before Stage 2.</div>
+          <div class="row" style="margin-top:14px; justify-content:center">
+            <img alt="" src="${STAGE_IMAGES.stage2Intro}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
+          </div>
+          <div class="row" style="margin-top:16px; justify-content:center">
+            <button class="btn" id="stage2NextBtn">Next</button>
+          </div>`;
+        panel.querySelector('#stage2NextBtn').addEventListener('click', ()=>showOverlayStage2Select());
       }
       function showFirstStageLose(){
         renderStageResultScreen({
@@ -705,7 +720,7 @@
         }
         if(game.state==='result' && game.stage===1 && game.boss?.hp<=0 && (e.code==='Space' || e.code==='Enter')){
           e.preventDefault();
-          showOverlayStage2Select();
+          showStage2IntroScreen();
           return;
         }
         if(game.state!=='playing') return;
