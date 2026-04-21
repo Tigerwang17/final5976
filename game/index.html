@@ -222,6 +222,7 @@
         1: new Audio('music/Battle1_Shatter the Core.mp3'),
         2: new Audio('music/Battle2_Void Hunger.mp3'),
       };
+      const stage2IntroSfx = new Audio('music/black.mp3');
       const resultSfx = {
         win: new Audio('music/victory.mp3'),
         lose: new Audio('music/fail.mp3'),
@@ -233,11 +234,96 @@
         bgm.preload = 'auto';
         bgm.volume = 0.45;
       }
+      stage2IntroSfx.loop = false;
+      stage2IntroSfx.preload = 'auto';
+      stage2IntroSfx.volume = 0.65;
       for(const key of Object.keys(resultSfx)){
         const sfx = resultSfx[key];
         sfx.loop = false;
         sfx.preload = 'auto';
         sfx.volume = 0.65;
+      }
+      function stopStage2IntroSfx(){
+        stage2IntroSfx.pause();
+        stage2IntroSfx.currentTime = 0;
+      }
+      function playStage2IntroSfx(){
+        stopStage2IntroSfx();
+        const playPromise = stage2IntroSfx.play();
+        if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+      }
+      let sfxCtx = null;
+      function ensureSfxCtx(){
+        if(!sfxCtx){
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if(!AC) return null;
+          sfxCtx = new AC();
+        }
+        if(sfxCtx.state === 'suspended'){
+          const p = sfxCtx.resume();
+          if(p && typeof p.catch === 'function') p.catch(() => {});
+        }
+        return sfxCtx;
+      }
+      function playPlayerHitSfx(){
+        const ctx = ensureSfxCtx();
+        if(!ctx) return;
+        const now = ctx.currentTime;
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.9, now);
+        master.connect(ctx.destination);
+
+        // Heavy low-end impact.
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(145, now);
+        osc.frequency.exponentialRampToValueAtTime(55, now + 0.22);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.42, now + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(now);
+        osc.stop(now + 0.26);
+
+        // Short noise burst for punch.
+        const bufferSize = Math.floor(ctx.sampleRate * 0.16);
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for(let i=0;i<bufferSize;i++) data[i] = (Math.random()*2 - 1) * (1 - i / bufferSize);
+        const noise = ctx.createBufferSource();
+        noise.buffer = noiseBuffer;
+        const noiseFilter = ctx.createBiquadFilter();
+        noiseFilter.type = 'lowpass';
+        noiseFilter.frequency.setValueAtTime(980, now);
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.0001, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.24, now + 0.008);
+        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(master);
+        noise.start(now);
+        noise.stop(now + 0.16);
+      }
+      function playBossHitSfx(){
+        const ctx = ensureSfxCtx();
+        if(!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(760, now + 0.04);
+        osc.frequency.exponentialRampToValueAtTime(640, now + 0.11);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.12, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.13);
       }
       function stopAllBgm(){
         for(const key of Object.keys(stageBgm)){
@@ -361,7 +447,7 @@
         game.stage = stageNo;
         const cfg = STAGE_CONFIGS[stageNo] || STAGE_CONFIGS[1];
         const bossSize = stageNo===2 ? getStage2BossSize() : getStage1BossSize();
-        game.boss={x:W/2-bossSize.w/2,y:stageNo===2?42:6,w:bossSize.w,h:bossSize.h,vx:cfg.speed,hp:cfg.hp,maxHp:cfg.hp,dropMin:cfg.dropMin,dropMax:cfg.dropMax};
+        game.boss={x:W/2-bossSize.w/2,y:6,w:bossSize.w,h:bossSize.h,vx:cfg.speed,hp:cfg.hp,maxHp:cfg.hp,dropMin:cfg.dropMin,dropMax:cfg.dropMax};
         game.players=[makePlayer(1,game.selected.p1,W*.35), makePlayer(2,game.selected.p2,W*.65)];
         game.bullets=[]; game.bombs=[]; game.fx=[]; game.t=0; game.cooldowns.p1=0; game.cooldowns.p2=0; game.cooldowns.bossBomb=rand(game.boss.dropMin,game.boss.dropMax); updateHUD();
         syncBgm();
@@ -376,6 +462,7 @@
       }
       function showOverlaySelect(){
         overlay.classList.remove('hidden'); game.state='select';
+        stopStage2IntroSfx();
         syncBgm();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title">Our Rations are All Stolen<br/>So Why on Earth are We Still Adventuring in This Dungeon?</div>
@@ -424,6 +511,7 @@
       }
       function showOverlayStage2Select(){
         overlay.classList.remove('hidden'); game.state='select';
+        stopStage2IntroSfx();
         syncBgm();
         overlay.onclick = null;
         game.selected.p1 = null;
@@ -512,6 +600,7 @@
         overlay.classList.remove('hidden');
         game.state='result';
         syncBgm();
+        playStage2IntroSfx();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Mr. Star Gone Dark</div>
           <div class="sub">A shadow rises before Stage 2.</div>
@@ -631,10 +720,27 @@
         drawPixelRect(x+px*2,y+px*3,b.w-px*4,b.h-px*8,'#ff4d6d'); drawPixelRect(x+px*6,y+px*1,b.w-px*12,px*4,'#ff9b3d'); drawPixelRect(x+px*8,y+px*7,b.w-px*16,px*6,'#7cf7ff'); drawPixelRect(x,y+px*10,px*6,px*8,'#ff9b3d'); drawPixelRect(x+b.w-px*6,y+px*10,px*6,px*8,'#ff9b3d'); drawPixelRect(x+px*10,y+px*9,px*2,px*2,COLORS.black); drawPixelRect(x+b.w-px*12,y+px*9,px*2,px*2,COLORS.black);
       }
       function drawPlayerShip(p){
-        if(p.inv>0 && (Math.floor(game.t*18)%2===0)) return;
+        if(p.lives>0 && p.inv>0 && (Math.floor(game.t*18)%2===0)) return;
         const x=Math.round(p.x), y=Math.round(p.y);
         const ch=CHARACTERS.find(c=>c.id===p.charId)||CHARACTERS[0];
         const portrait = characterImages.get(ch.id);
+        if(p.lives<=0){
+          const downW = p.h;
+          const downH = p.w;
+          const downX = x + (p.w - downW) / 2;
+          const downY = y + p.h - downH;
+          if(portrait && portrait.complete && portrait.naturalWidth>0){
+            ctx.save();
+            ctx.imageSmoothingEnabled = false;
+            ctx.translate(Math.round(downX + downW/2), Math.round(downY + downH/2));
+            ctx.rotate(-Math.PI / 2);
+            ctx.drawImage(portrait, Math.round(-downH/2), Math.round(-downW/2), downH, downW);
+            ctx.restore();
+          } else {
+            drawPixelRect(downX, downY, downW, downH, 'rgba(255,255,255,0.2)');
+          }
+          return;
+        }
         if(portrait && portrait.complete && portrait.naturalWidth>0){
           ctx.save();
           ctx.imageSmoothingEnabled = false;
@@ -693,8 +799,8 @@
           vy:rand(260,380),
         });
       };
-      function hurtPlayer(p){ if(p.lives<=0||p.inv>0) return; p.lives=Math.max(0,p.lives-1); p.inv=.9; game.shake=.18; game.fx.push({t:0,x:p.x+p.w/2,y:p.y+p.h/2,color:COLORS.red}); updateHUD(); }
-      function hurtBoss(){ if(!game.boss) return; game.boss.hp=Math.max(0,game.boss.hp-1); game.fx.push({t:0,x:game.boss.x+game.boss.w/2,y:game.boss.y+game.boss.h/2,color:COLORS.neon2}); if(game.boss.hp<=0){ game.state='win'; showOverlayEnd('win'); } updateHUD(); }
+      function hurtPlayer(p){ if(p.lives<=0||p.inv>0) return; p.lives=Math.max(0,p.lives-1); p.inv=.9; game.shake=.18; game.fx.push({t:0,x:p.x+p.w/2,y:p.y+p.h/2,color:COLORS.red}); playPlayerHitSfx(); updateHUD(); }
+      function hurtBoss(){ if(!game.boss) return; game.boss.hp=Math.max(0,game.boss.hp-1); game.fx.push({t:0,x:game.boss.x+game.boss.w/2,y:game.boss.y+game.boss.h/2,color:COLORS.neon2}); playBossHitSfx(); if(game.boss.hp<=0){ game.state='win'; showOverlayEnd('win'); } updateHUD(); }
       const allPlayersDead=()=>game.players.every(p=>p.lives<=0);
       function update(dt){
         game.t+=dt; if(game.shake>0) game.shake=Math.max(0,game.shake-dt);
