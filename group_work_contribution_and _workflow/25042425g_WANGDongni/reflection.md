@@ -1,46 +1,55 @@
 # Reflection — Oreo
 
-**Member:** （填写组员名字）
+**Member:** Wang Dongni
 **Character:** Oreo · Game Development · HTML Integration
 
 ---
 
 ## How Did AI Tools Affect Your Production Pipeline?
 
-**Tools used:** Claude Code (game development), 即梦AI + Lovart (character video segment)
+**Tools used:** Cursor (game development), ComfyUI\Agent Bot\Lovart (Game assets generation)
 
 **Before AI tools, this task would have required:**
-- （填写，例：大量手动编写 Canvas 游戏逻辑）
+- Writing most Canvas gameplay logic manually (movement, collision, boss patterns, stage flow, and UI states)
+- Building and testing each feature with slower trial-and-error debugging across many small code edits
+- Manually coordinating visual/audio asset integration, path management, and repeated browser validation
+- Handling GitHub update synchronization and commit organization with higher communication and time cost
 
 **With AI tools, the process became:**
-- （填写，例：Claude Code 帮助快速搭建游戏框架）
+- Converting feature ideas into prompt-driven implementation cycles, then refining details through fast iterations
+- Reusing AI-assisted code edits for repeated tasks (UI text updates, stage transitions, audio triggers, and state logic)
+- Integrating generated assets (images/music) faster with immediate path checks and in-browser validation
+- Keeping GitHub updates cleaner by committing focused batches after each completed gameplay change
 
 **Unexpected challenges:**
-- （填写，例：AI 生成代码的调试，prompt engineering for consistent visual style）
+- Prompt precision mattered: vague requirements often produced correct code structure but incorrect gameplay behavior
+- Audio autoplay/browser policy limits required fallback handling and extra testing for reliable playback
+- Asset consistency across tools (Lovart, ComfyUI, Agent Bot) still required manual curation and naming discipline
+- AI output was fast but not always aligned with project style, so human review remained essential
 
 ---
 
 ## What Were the Implications of Including AI Tools in Your Output?
 
 **Creative implications:**
-（AI 是否影响了你的游戏设计决策？例如角色机制、视觉风格？）
+AI tools expanded the range of ideas we could test in limited time. Instead of committing to one design early, I explored multiple stage flows, result screens, and feedback effects (BGM, hit SFX, transition pages) before selecting the final version. This made the game feel more intentional, but it also meant I had to actively control consistency so the visual and interaction style stayed coherent.
 
 **Quality implications:**
-（AI 辅助开发的代码质量如何？需要多少人工修改？）
+AI-assisted coding significantly improved development speed, but quality still depended on human verification. Most generated logic needed at least one review pass for edge cases (state switching, event timing, audio overlap, and route jumps). In practice, AI produced a strong draft, while final stability came from manual testing and correction.
 
 **Authorship implications:**
-（使用 Claude Code 生成游戏代码，你认为这段代码的"作者"是谁？）
+I consider authorship to be collaborative but directed. I defined gameplay goals, constraints, and acceptance criteria, while AI produced implementation candidates. The final shipped version reflects my decisions on what to keep, revise, or reject. So the creative and editorial authorship is human-led, with AI as a production accelerator.
 
 ---
 
 ## Key Learnings
 
-1. （填写）
-2. （填写）
-3. （填写）
+1. **Prompt quality directly affects code quality.** Clear constraints and expected outcomes reduce rework.
+2. **Fast generation still needs disciplined review.** AI speed is valuable only when paired with structured testing.
+3. **Tool diversity is useful when roles are clear.** Platform AI, ComfyUI, and Agent Bot each work best in different stages.
 
 ---
 
 ## If I Did It Again…
 
-（填写）
+I would define a stricter production checklist at the start: naming conventions, asset specs, stage-state mapping, and audio behavior rules. I would also prepare reusable prompt templates for recurring game tasks (UI updates, event wiring, and transition logic) and schedule checkpoint-based QA after each feature block to reduce late-stage fixes.
