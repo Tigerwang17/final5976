@@ -10,18 +10,9 @@
 
 - [x] Game code: `game/index.html` (two-player co-op boss battle)
 - [x] Root integration page: `final.html` (prologue → game → endings)
-- [x] Music Generation:
-- [ ] Oreo character segment (part of `videos/prologue.mp4`)
-- [ ] Prompts documented: `group_work_contribution_and _workflow/WANGDongni/prompts.md`
-- [ ] Reflection written: `group_work_contribution_and _workflow/WANGDongni/reflection.md`
-
----
-
-## Character Reference
-`https://github.com/Tigerwang17/final5976/tree/main/character_pics/oreo`
-- **Race:** Cat-folk
-- **Class:** Ninja Assassin
-- **Goal:** Find the legendary medicine to cure her grandfather
+- [x] Music Generation:`game/music`
+- [x] Game images assets generation: `game/character_pixel`, `game/stages`
+- [x] Reflection written: `group_work_contribution_and _workflow/WANGDongni/reflection.md`
 
 ---
 
