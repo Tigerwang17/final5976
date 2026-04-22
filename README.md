@@ -139,7 +139,7 @@ final_project_SD5976/
 | Member / 成员 | Tasks / 负责内容 |
 |--------------|----------------|
 | **LI Yanling — 25057915g** | Project file architecture · Storyboard text prompts (all 3 videos, bilingual) · Main story content · `final.html` HTML display · PPT opening & story background slides |
-| （填写） | Cheri character segment · Ending A short film production · Workflow docs |
+|  **PAN Yiting — 25053695g** | Cheri character segment · Storyboards generation · Video generation · presentaion PPT · Ending A short film production · Workflow docs |
 | （填写） | Enos character segment · Ending B short film production · Workflow docs |
 | （填写） | Oreo character segment · Game code · HTML integration · Win/lose logic · Workflow docs |
 
