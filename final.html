@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Rations are All Stolen — SD5976 Final Project</title>
+  <style>
+    :root {
+      --bg: #080a12;
+      --txt: #e7f6ff;
+      --muted: rgba(231,246,255,0.65);
+      --accent: #ffd24a;
+      --accent2: #7cf7ff;
+      --panel: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* ── Sections ── */
+    .section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+    .section.hidden { display: none; }
+
+    /* ── Background decoration ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(124,247,255,0.12), transparent 55%),
+        radial-gradient(1000px 800px at 85% 25%, rgba(255,210,74,0.10), transparent 60%);
+    }
+    .section > * { position: relative; z-index: 1; }
+
+    /* ── Title bar ── */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 12px 28px;
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(8,10,18,0.82);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header h1 { font-size: 14px; font-weight: 700; letter-spacing: 0.4px; color: var(--accent); }
+    .site-header nav { margin-left: auto; display: flex; gap: 10px; }
+    .nav-btn {
+      padding: 5px 14px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--muted); font-size: 12px; cursor: pointer;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--txt); border-color: rgba(255,255,255,0.3); }
+
+    /* ── Intro video section ── */
+    #section-intro { padding-top: 80px; }
+    .intro-title {
+      font-size: clamp(18px, 3vw, 30px);
+      font-weight: 900; letter-spacing: 0.5px;
+      text-align: center; margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .intro-sub {
+      text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 28px;
+    }
+    .video-container {
+      width: min(860px, calc(100vw - 40px));
+      border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      background: #000;
+    }
+    .video-container video {
+      width: 100%; display: block;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+    .video-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      background: rgba(0,0,0,0.4);
+      color: var(--muted); font-size: 14px;
+    }
+    .video-placeholder .icon { font-size: 40px; opacity: 0.4; }
+    .btn-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      padding: 10px 26px; border-radius: 999px; cursor: pointer;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.3px;
+      border: none; transition: transform .12s, opacity .12s;
+    }
+    .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .btn-primary { background: var(--accent); color: #111; }
+    .btn-secondary {
+      background: var(--panel); color: var(--txt);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Game section ── */
+    #section-game { padding-top: 80px; }
+    .game-wrapper {
+      width: min(980px, calc(100vw - 20px));
+      border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .game-wrapper iframe {
+      width: 100%; height: 700px; border: none; display: block;
+      background: #080a12;
+    }
+
+    /* ── Ending section ── */
+    #section-ending { padding-top: 80px; }
+    .ending-tabs { display: flex; gap: 10px; margin-bottom: 22px; }
+    .tab-btn {
+      padding: 7px 20px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--muted); font-size: 13px; cursor: pointer;
+      transition: all .15s;
+    }
+    .tab-btn.active { background: var(--accent); color: #111; border-color: var(--accent); font-weight: 700; }
+    .ending-label {
+      text-align: center; font-size: 20px; font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .ending-desc { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 22px; }
+
+    /* ── Credits ── */
+    #section-credits {
+      background: rgba(0,0,0,0.25);
+      border-top: 1px solid var(--border);
+      min-height: auto; padding: 48px 20px;
+    }
+    .credits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px; width: min(800px, 100%); margin: 0 auto 32px;
+    }
+    .credit-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px;
+    }
+    .credit-card .role { font-size: 11px; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .credit-card .name { font-size: 15px; font-weight: 700; }
+    .credit-card .desc { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+    .credits-note { text-align: center; color: var(--muted); font-size: 12px; }
+    .credits-note a { color: var(--accent2); }
+
+    /* ── Opening Video ── */
+    #section-opening {
+      position: fixed; inset: 0; z-index: 200;
+      background: #000;
+      padding: 0;
+    }
+    #opening-video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    #skip-btn {
+      position: absolute; bottom: 30px; right: 30px;
+      z-index: 210;
+      padding: 8px 22px; font-size: 13px;
+      background: rgba(0,0,0,0.45); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 999px;
+      cursor: pointer; backdrop-filter: blur(8px);
+      transition: all .15s;
+    }
+    #skip-btn:hover { background: rgba(0,0,0,0.65); color: var(--txt); }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed navigation -->
+  <header class="site-header">
+    <h1>Our Rations are All Stolen</h1>
+    <nav>
+      <button class="nav-btn active" onclick="goTo('intro')">Prologue</button>
+      <button class="nav-btn" onclick="goTo('game')">Boss Battle</button>
+      <button class="nav-btn" onclick="goTo('ending')">Ending</button>
+      <button class="nav-btn" onclick="goTo('credits')">Credits</button>
+    </nav>
+  </header>
+
+  <!-- ⓪ Opening Video -->
+  <section id="section-opening" class="section">
+    <video id="opening-video" autoplay muted controls playsinline>
+      <source src="videos/Edited/Opening.mp4" type="video/mp4" />
+    </video>
+    <button id="skip-btn">Skip</button>
+  </section>
+
+  <!-- ① Prologue video -->
+  <section id="section-intro" class="section hidden">
+    <p class="intro-title">Our Rations are All Stolen, So Why on Earth<br>are We Still Adventuring in This Dungeon?</p>
+    <p class="intro-sub">SD5976 Final Project · A narrative game experience</p>
+
+    <div class="video-container">
+      <video id="intro-video" controls poster="game/stages/background.png">
+        <source src="videos/Edited/Prologue.mp4" type="video/mp4" />
+      </video>
+      <div class="video-placeholder" id="intro-placeholder" style="display:none;">
+        <div class="icon">🎬</div>
+        <div>Prologue video coming soon</div>
+        <div style="font-size:12px;">Add <code>videos/prologue.mp4</code> to enable playback</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goTo('game')">▶ Enter Boss Battle</button>
+      <button class="btn btn-secondary" onclick="goTo('credits')">View Credits</button>
+    </div>
+  </section>
+
+  <!-- ② Boss Battle (game) -->
+  <section id="section-game" class="section hidden">
+    <div class="game-wrapper">
+      <iframe
+        id="game-iframe"
+        src="https://tigerwang17.github.io/final5976/game/index.html"
+        title="Dungeon Boss Battle"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('intro')">← Back to Prologue</button>
+      <button class="btn btn-primary" onclick="goTo('ending')">View Endings →</button>
+    </div>
+  </section>
+
+  <!-- ③ Ending videos -->
+  <section id="section-ending" class="section hidden">
+    <div class="ending-tabs">
+      <button class="tab-btn active" id="tab-a" onclick="showEnding('a')">Ending A — Victory</button>
+      <button class="tab-btn" id="tab-b" onclick="showEnding('b')">Ending B — Defeat</button>
+    </div>
+
+    <div id="ending-a-wrap">
+      <p class="ending-label" style="color: #7dff7a;">Ending A — Victory</p>
+      <p class="ending-desc">The heroes defeat Mr. Star and escape the crumbling dungeon.</p>
+      <div class="video-container">
+        <video id="ending-a-video" controls poster="game/stages/gamewin_2.jpg">
+          <source src="https://tigerwang17.github.io/final5976/videos/Edited/HE_A.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <div id="ending-b-wrap" style="display:none;">
+      <p class="ending-label" style="color: #ff4d6d;">Ending B — Defeat</p>
+      <p class="ending-desc">Mr. Star wins. Darkness spreads beyond the dungeon.</p>
+      <div class="video-container">
+        <video id="ending-b-video" controls poster="game/stages/gameover_2.png">
+          <source src="https://tigerwang17.github.io/final5976/videos/Edited/BE EndingB.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('game')">← Back to Game</button>
+    </div>
+  </section>
+
+  <!-- ④ Credits -->
+  <section id="section-credits" class="section hidden">
+    <div class="credits-grid">
+      <div class="credit-card">
+        <div class="role">Character</div>
+        <div class="name">Mr. Star</div>
+        <div class="desc">Prologue short film · Character segment · Workflow documentation</div>
+      </div>
+      <div class="credit-card">
+        <div class="role">Character</div>
+        <div class="name">Cheri</div>
+        <div class="desc">Cheri segment · Ending A short film · Workflow documentation</div>
+      </div>
+      <div class="credit-card">
+        <div class="role">Character</div>
+        <div class="name">Enos</div>
+        <div class="desc">Enos segment · Ending B short film · Workflow documentation</div>
+      </div>
+      <div class="credit-card">
+        <div class="role">Character</div>
+        <div class="name">Oreo</div>
+        <div class="desc">Game code · Video integration · Win/lose logic · Workflow documentation</div>
+      </div>
+    </div>
+    <p class="credits-note">
+      Character data: <a href="https://github.com/venetanji/polyu-storyworld/tree/main/characters" target="_blank">polyu-storyworld</a> ·
+      Video generation: 即梦AI + Lovart · Development: Claude Code
+    </p>
+    <div class="btn-row" style="margin-top: 28px;">
+      <button class="btn btn-secondary" onclick="goTo('intro')">↑ Back to Top</button>
+    </div>
+  </section>
+
+  <script>
+    const SECTIONS = ['intro', 'game', 'ending', 'credits'];
+
+    function goTo(id) {
+      SECTIONS.forEach(s => {
+        document.getElementById('section-' + s).classList.toggle('hidden', s !== id);
+      });
+      document.querySelectorAll('.nav-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', SECTIONS[i] === id);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showEnding(which) {
+      document.getElementById('ending-a-wrap').style.display = which === 'a' ? '' : 'none';
+      document.getElementById('ending-b-wrap').style.display = which === 'b' ? '' : 'none';
+      document.getElementById('tab-a').classList.toggle('active', which === 'a');
+      document.getElementById('tab-b').classList.toggle('active', which === 'b');
+    }
+    function playEndingAVictory(autoplay = true) {
+      goTo('ending');
+      showEnding('a');
+      if(!autoplay) return;
+      const endingAVideo = document.getElementById('ending-a-video');
+      if(!endingAVideo) return;
+      const playPromise = endingAVideo.play();
+      if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+    }
+
+    // Check if intro video exists; show placeholder if not
+    const introVideo = document.getElementById('intro-video');
+    const introPlaceholder = document.getElementById('intro-placeholder');
+    introVideo.addEventListener('error', () => {
+      introVideo.style.display = 'none';
+      introPlaceholder.style.display = 'flex';
+    });
+
+    // Auto-advance to ending after intro video ends
+    introVideo.addEventListener('ended', () => {
+      setTimeout(() => goTo('game'), 800);
+    });
+    window.addEventListener('message', (event) => {
+      if(event?.data?.type === 'PLAY_ENDING_A_FROM_GAME') playEndingAVictory(true);
+      if(event?.data?.type === 'SHOW_ENDING_B_FROM_GAME'){
+        goTo('ending');
+        showEnding('b');
+      }
+    });
+    const urlParams = new URLSearchParams(window.location.search);
+    const sectionParam = urlParams.get('section');
+    const endingParam = urlParams.get('ending');
+    const autoplayParam = urlParams.get('autoplay');
+    if(sectionParam && SECTIONS.includes(sectionParam)) goTo(sectionParam);
+    if(endingParam === 'a' || endingParam === 'b') showEnding(endingParam);
+    if(autoplayParam === '1' && endingParam === 'a') playEndingAVictory(true);
+
+    // --- Opening video logic ---
+    const openingSection = document.getElementById('section-opening');
+    const siteHeader = document.querySelector('.site-header');
+    const openingVideo = document.getElementById('opening-video');
+    const skipBtn = document.getElementById('skip-btn');
+
+    function startMainContent() {
+      if (!openingSection.classList.contains('hidden')) {
+        openingSection.classList.add('hidden');
+        openingVideo.pause();
+        siteHeader.style.display = '';
+        goTo('intro');
+      }
+    }
+
+    // Hide main content initially
+    siteHeader.style.display = 'none';
+
+    // Show main content after video ends or is skipped
+    openingVideo.addEventListener('ended', startMainContent);
+    skipBtn.addEventListener('click', startMainContent);
+    openingVideo.play().catch(() => {
+      // Autoplay was blocked, show skip button immediately and wait for interaction
+      skipBtn.style.opacity = 1;
+    });
+  </script>
+</body>
+</html>
