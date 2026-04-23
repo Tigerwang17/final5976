@@ -3,7 +3,7 @@
 **Responsible member:** Shen Ziqi 25054114G
 **Character:** Enos (Half-elf Mage)
 
-**Tasks:** Enos character segment · Ending B short film ·Opening film ·P1234 · Workflow documentation
+**Tasks:** Video production (P1, P2, P3, P4, video_Wan2.7_r2v_00001_(1), end_A, endA, ENDB) · Workflow documentation
 
 
 
