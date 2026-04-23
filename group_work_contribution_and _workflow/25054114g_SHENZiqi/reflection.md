@@ -1,7 +1,7 @@
 # Reflection — Enos
 
 **Member:** Shen Ziqi
-**Character:** Enos · Ending B (Defeat)
+
 
 ---
 

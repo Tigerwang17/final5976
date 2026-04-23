@@ -1,42 +1,36 @@
 # Enos — Workflow
 
-**Responsible member:** （填写组员名字）
+**Responsible member:** Shen Ziqi 25054114G
 **Character:** Enos (Half-elf Mage)
-**Tasks:** Enos character segment · Ending B short film · Workflow documentation
 
----
+**Tasks:** Enos character segment · Ending B short film ·Opening film ·P1234 · Workflow documentation
 
-## Deliverables
 
-- [ ] Enos character segment (part of `videos/prologue.mp4`)
-- [ ] Ending B video: `videos/ending_b.mp4`
-- [ ] Storyboard text: `storyboard/text/ending_b.md`
-- [ ] First/last frames: `storyboard/frames/ending_b/`
-- [ ] Prompts documented: `group_work_contribution_and _workflow/SHENZiqi/prompts.md`
-- [ ] Reflection written: `group_work_contribution_and _workflow/SHENZiqi/reflection.md`
 
----
+***
 
-## Character Reference
+Game Logic and Integration Support
 
-From [polyu-storyworld](https://github.com/venetanji/polyu-storyworld/tree/main/characters):
+Beyond the video production for Enos and Ending B, I also provided significant support in debugging, refining, and integrating the core game logic within `game/index.html`.
 
-- **Race:** Half-elf
-- **Class:** Mage
-- **Goal:** Gather material for his thesis inside the dungeon
+Key contributions include:
 
----
+- **Boss AI Overhaul:**
+  - Reworked the behavior for both bosses.
+  - **Boss 1:** Implemented horizontal movement with random bomb drops.
+  - **Boss 2:** Designed a two-phase battle. Phase 1 involves a stationary boss with random bomb spawns and a new floating animation. Phase 2 reverts to the original move-and-drop pattern.
+  - Added a new "dive bomb" attack for Boss 1 at half health.
+- **Player Character Refinement:**
+  - Re-mapped Player 2 controls to the numpad (`1` for left, `3` for right, `0` for attack, `5` for skill).
+  - Updated character stats (HP, damage) and implemented a skill system with usage limits and cooldowns.
+  - Changed the Ninja's skill from temporary invincibility to a shield that blocks a set number of hits.
+- **Bug Fixing and Debugging:**
+  - Addressed a critical bug where the boss was not taking damage.
+  - Fixed an issue preventing character skills from being triggered.
+  - Resolved a UI overflow problem on the character selection screen.
+  - Corrected a loading issue that resulted in a blank screen.
+- **Video Integration and Git Troubleshooting:**
+  - Assisted in integrating all video files into the main `final.html` page.
+  - Diagnosed and resolved a complex issue related to **Git LFS** and **GitHub Pages** incompatbility, which prevented videos from playing on the live site.
+  - The solution involved migrating files away from LFS, compressing oversized videos to meet GitHub's file size limits, and ultimately resetting the Git history to resolve persistent repository errors.
 
-## Video Production Process
-
-### Step 1 — Script & Storyboard
-（描述你如何规划 Enos 的场景故事，以及结局B的叙事）
-
-### Step 2 — Prompt Writing
-（描述如何将故事转化为 AI 视频 prompt）
-
-### Step 3 — Generation & Selection
-（描述用 即梦AI + Lovart 生成，选取最佳片段的过程）
-
-### Step 4 — Editing & Export
-（描述如何剪辑成最终片段）
