@@ -642,29 +642,37 @@
         playStage2IntroSfx();
         overlay.onclick = null;
         panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Mr. Star has fallen into darkness</div>
-          <div class="sub">A shadow rises before the next battle.</div>
+          <div class="sub">The transformation begins...</div>
           <div class="row" style="margin-top:14px; justify-content:center">
-            <img alt="" src="${STAGE_IMAGES.stage2Intro1}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
+            <video id="boss-cg-video" autoplay muted playsinline style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)">
+              <source src="../videos/Edited/Boss2 CG.mp4" type="video/mp4" />
+            </video>
           </div>
           <div class="row" style="margin-top:16px; justify-content:center">
-            <button class="btn" id="stage2IntroNext1Btn">Next</button>
+            <button class="btn" id="skipCgBtn">Skip</button>
           </div>`;
-        panel.querySelector('#stage2IntroNext1Btn').addEventListener('click', ()=>showStage2IntroScreenStep2());
-      }
-      function showStage2IntroScreenStep2(){
-        overlay.classList.remove('hidden');
-        game.state='result';
-        syncBgm();
-        overlay.onclick = null;
-        panel.innerHTML = `<div class="title" style="font-size:30px; text-shadow:0 10px 40px rgba(0,0,0,0.55)">Mr. Star has fallen into darkness</div>
-          <div class="sub">The final battle is about to begin.</div>
-          <div class="row" style="margin-top:14px; justify-content:center">
-            <img alt="" src="${STAGE_IMAGES.stage2Intro2}" style="max-width:min(760px,100%); max-height:360px; width:100%; object-fit:contain; border-radius:12px; border:1px solid rgba(255,255,255,0.18)" />
-          </div>
-          <div class="row" style="margin-top:16px; justify-content:center">
-            <button class="btn" id="stage2IntroNext2Btn">Next</button>
-          </div>`;
-        panel.querySelector('#stage2IntroNext2Btn').addEventListener('click', ()=>showOverlayStage2Select());
+
+        const video = panel.querySelector('#boss-cg-video');
+        const skipBtn = panel.querySelector('#skipCgBtn');
+
+        const proceedToSelect = () => {
+          if (video) video.pause();
+          showOverlayStage2Select();
+        };
+
+        if (video) {
+            video.addEventListener('ended', proceedToSelect);
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.error("Video autoplay failed:", error);
+                    // If autoplay fails, the user can still click skip.
+                });
+            }
+        }
+        if (skipBtn) {
+            skipBtn.addEventListener('click', proceedToSelect);
+        }
       }
       function showFirstStageLose(){
         playResultSfx('lose');
