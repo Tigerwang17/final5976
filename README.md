@@ -175,7 +175,7 @@ final_project_SD5976/
 | Member / 成员 | Tasks / 负责内容 |
 |--------------|----------------|
 | **LI Yanling — 25057915g** | Project file architecture · Storyboard text prompts (all 3 videos, bilingual) · Main story content · `final.html` HTML display · PPT opening & story background slides |
-| **PAN Yiting — 25053695g** | Cheri character segment · Storyboard generation · Video generation · Presentation PPT · Ending A short film production · Workflow docs |
+| **PAN Yiting — 25053695g** | Cheri character segment · Storyboard generation · Video generation · Presentation PPT · Prologue& Ending A short film production and editing · Workflow docs |
 | **SHEN Ziqi — 25054114g** | Enos character segment · Ending B short film production · Workflow docs |
 | **WANG Dongni — 25042425g** | Game code (`game/index.html`) · Music generation (ComfyUI ACE-Step) · Game asset generation · `final.html` video integration · Win/lose logic · Workflow docs |
 
