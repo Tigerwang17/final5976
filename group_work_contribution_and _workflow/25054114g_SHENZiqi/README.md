@@ -44,7 +44,7 @@ In addition to the technical contributions, I took on the task of creating a dem
 - **Learnings:** This task enhanced my skills in video editing and highlighted the importance of asset management in web projects. It also emphasized the need for early testing of deployment pipelines to avoid last-minute issues.
 
 ### PPT Reflection
-- **Process:** For the PPT, I summarized key project milestones, individual contributions, and group dynamics into bullet points. This included reflections on our workflow, technical challenges overcome (e.g., game logic bugs, video integration), and how the project aligned with our initial story concept.
+- **Process:** For the PPT, I summarized reflections on our workflow, technical challenges overcome (e.g., game logic bugs, video integration), and how the project aligned with our initial story concept.
 - **Challenges:** Condensing complex technical details into concise, engaging slides while maintaining a reflective tone was tricky. Balancing factual reporting with personal insights required several revisions.
 - **Learnings:** Preparing the reflection helped me appreciate the collaborative nature of the project. It reinforced lessons in version control, debugging, and cross-functional teamwork, and I gained a deeper understanding of how narrative elements (like our dual endings) integrate with interactive gameplay.
 
