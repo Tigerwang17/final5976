@@ -8,11 +8,11 @@
 
 ## Deliverables
 
-- [x] Game code: `game/index.html` (two-player co-op boss battle)
-- [x] Root integration page: `final.html` (prologue → game → endings)
-- [x] Music Generation:`game/music`
-- [x] Game images assets generation: `game/character_pixel`, `game/stages`
-- [x] Reflection written: `group_work_contribution_and _workflow/WANGDongni/reflection.md`
+- Game code: `game/index.html` (two-player co-op boss battle)
+- Root integration page: `final.html` (prologue → game → endings)
+- Music Generation:`game/music`
+- Game images assets generation: `game/character_pixel`, `game/stages`
+- Contribution&Reflection: `group_work_contribution_and _workflow/WANGDongni/reflection.md`,`group_work_contribution_and _workflow/25042425g_WANGDongni/Contruibution.md`
 
 ---
 
@@ -21,6 +21,7 @@
 The game (`game/index.html`) is a zero-dependency, single-file browser game built with HTML5 Canvas.
 
 **Key features implemented:**
+
 - Two-player local co-op (Player 1: WASD+Space, Player 2: 90+=)
 - Character select screen for both players
 - Stage 1 boss: Dragon (恶龙) — team fights together
@@ -29,6 +30,7 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 - Happy Ending screen after Stage 2 clear
 
 **Integration (`final.html`):**
+
 - Prologue video → Stage 1 Dragon game → cutscene → Stage 2 Mr. Star game → Ending video
 - Ending A plays on Stage 2 victory; Ending B plays on Stage 2 defeat
 - Navigation bar for all sections
@@ -37,18 +39,22 @@ The game (`game/index.html`) is a zero-dependency, single-file browser game buil
 
 ## Game Production Process
 
-### Step 1 — Game Design 
+### Step 1 — Game Design
+
 I first broke the gameplay into clear modules: player controls, boss behavior, collision rules, win/lose states, and stage transitions.  
 Then I mapped the full experience flow: character select -> Stage 1 -> transition scene -> Stage 2 -> ending branches.
 
 ### Step 2 — Prompt Writing
+
 For each implementation task, I wrote requirement prompts that described:
+
 - target behavior (what should happen),
 - interaction details (keys, UI text, transitions),
 - expected outputs (code changes and assets wiring),
 - constraints (single-file canvas game, existing folder structure).
 
 ### Step 3 — Vibe Coding
+
 Using Cursor, I iterated quickly through implementation, debugging, and refinement.  
 Most game logic updates (boss replacement, hit effects, stage flow, result routing, BGM/SFX triggering, and GitHub synchronization) were completed through prompt-driven coding iterations.
 
@@ -64,11 +70,9 @@ For visual assets (video key frames + game materials), I tested three AI tool ty
 - **Platform tools (Lovart)**  
   - Strengths: **High-quality**, **User-friendly**  
   - Weakness: **Costly**
-
 - **ComfyUI workflow**  
   - Strengths: **Controllable**, **Co-Built**  
   - Weakness: **Hardware-demanding**
-
 - **Agent Bot**  
   - Strengths: **Autonomous**, **Remotely operable**  
   - Weakness: **Lower controllability**
