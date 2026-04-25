@@ -1,14 +1,16 @@
 # Pixel Co-op Shooter (Dungeon Game)
 
-A zero-dependency, browser-only two-player local co-op mini game. Open `index.html` to play—character select, two boss stages, result screens, and a Happy Ending.
+A zero-dependency, browser-only two-player local co-op mini game. Open `index.html` to play—character select with stats and skills, two boss stages with phases, result screens, and a Happy Ending.
 
 ## Features
 
 - **Single file**: HTML, CSS, and JavaScript live in `index.html`
-- **Same-screen co-op**: Player 1 and Player 2 move and shoot independently
-- **Character select**: Pick a character for each player before starting
-- **Two stages**: Beat stage 1 to unlock stage 2 (with a special restriction)
-- **HUD**: Boss HP bar, character names, and lives (hearts)
+- **Same-screen co-op**: Player 1 and Player 2 move, shoot, and use skills independently
+- **Character select**: Pick characters for each player before starting, view stats (HP, DMG) and skill descriptions
+- **Two stages**: Beat stage 1 (Dragon Boss) to unlock stage 2 (Mr. Star Boss), each with unique behaviors and phases
+- **HUD**: Boss HP bar, player names, lives (hearts), skill uses, and shield indicators
+- **Skills**: Each character has unique skills with limited uses (e.g., shield, heal, big shot)
+- **Boss Mechanics**: Dynamic movements, bomb drops, dive bombs in phases
 - **Preloaded assets**: Character art, stage art, background, and boss sprites
 
 ## Quick start
@@ -26,15 +28,35 @@ Use a recent **Chrome**, **Edge**, or **Safari** for best results.
 
 - `A` / `D` — move left / right
 - `Space` — fire
+- `C` — use skill (if available)
 
 ### Player 2
 
-- `9` / `0` (or `Numpad9` / `Numpad0`) — move left / right
-- `=` — fire
+- `Numpad1` / `Numpad3` — move left / right
+- `Numpad0` — fire
+- `Numpad5` — use skill (if available)
 
 ### Both players
 
 - `R` — restart the current stage (also works from some result screens)
+
+## Characters
+
+Each character has unique stats and skills (2 uses per skill):
+
+- **Mr. Star**: HP 3, DMG 1, Skill: Healing Shot (Fire a shot that heals all players for 1 HP on hit)
+- **Ninja Oreo**: HP 2, DMG 2, Skill: Shield (Create a shield that blocks 2 hits)
+- **Sage Cheri**: HP 4, DMG 0.5, Skill: Group Heal (Heal all players for 1 HP)
+- **Wizard Enos**: HP 3, DMG 1, Skill: Big Shot (Fire a giant bullet that deals 3x damage)
+
+## Boss Stages
+
+- **Stage 1 (Dragon Boss)**:
+  - Moves left/right at top, drops bombs randomly
+  - Phase 2 (half HP): Summons dive bombs from top
+- **Stage 2 (Mr. Star Boss)**:
+  - Phase 1 (first half HP): Stationary, bombs drop from random top positions
+  - Phase 2: Moves left/right with floating animation, drops bombs from position and randomly from top
 
 ## Win & lose
 
@@ -43,10 +65,10 @@ Use a recent **Chrome**, **Edge**, or **Safari** for best results.
 
 ## Progression
 
-1. On the overlay, choose characters for Player 1 and Player 2
-2. After clearing stage 1, pick characters again for stage 2
-3. In stage 2, **Mr. Star** is corrupted and **cannot** be selected
-4. After clearing stage 2, open the **HAPPY ENDING** screen
+1. On the overlay, choose characters for Player 1 and Player 2 (view stats and skills)
+2. Clear stage 1 to proceed to stage 2
+3. In stage 2, battle the corrupted Mr. Star
+4. After clearing stage 2, view the **HAPPY ENDING** screen
 
 ## Easter eggs (debug / cheats)
 
@@ -77,6 +99,6 @@ For static hosts (e.g. [GitHub Pages](https://pages.github.com/)), serve the rep
 ## Possible extensions
 
 - Sound effects and background music
-- A third stage or boss attack patterns
-- Per-character stats (fire rate, bullet pattern, lives)
+- Additional stages or boss attack patterns
+- More characters or skill variations
 - Pause menu and remappable keys
